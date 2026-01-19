@@ -1,4 +1,4 @@
-export type Explorer = "etherscan" | "blockscan" | "debank";
+export type Explorer = "etherscan" | "blockscout" | "debank";
 
 export interface EthosProfile {
   score: number;
@@ -79,3 +79,23 @@ export interface EthosApiError {
 export type EthosApiResult =
   | { success: true; data: EthosApiUserResponse }
   | { success: false; error: EthosApiError };
+
+export interface AnchorPoint {
+  element: HTMLElement;
+  insertionStrategy: "after" | "before" | "prepend" | "append";
+  confidence: "high" | "medium" | "low";
+}
+
+export interface AnchorSelector {
+  query: string;
+  strategy: "after" | "before" | "prepend" | "append";
+  validator?: (element: HTMLElement) => boolean;
+}
+
+export interface AnchorConfig {
+  explorer: Explorer;
+  selectors: AnchorSelector[];
+  fallbackSelector?: string;
+  waitForDynamicContent?: boolean;
+  maxRetries?: number;
+}

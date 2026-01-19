@@ -11,8 +11,8 @@
       "matches": [
         "https://etherscan.io/address/*",
         "https://*.etherscan.io/address/*",
-        "https://blockscan.com/address/*",
-        "https://*.blockscan.com/address/*",
+        "https://blockscout.com/address/*",
+        "https://*.blockscout.com/address/*",
         "https://debank.com/profile/*"
       ],
       "js": ["content.js"],

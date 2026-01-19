@@ -1,6 +1,7 @@
 import "../styles/content.css";
 import type { Explorer, AddressParseResult } from "../shared/types";
 import { fetchEthosProfile, normalizeEthosData } from "../api/ethos";
+import { findAnchorPoint } from "./dom-anchor.js";
 
 function validateEthereumAddress(address: string): boolean {
   if (!address || typeof address !== "string") {
@@ -28,8 +29,8 @@ function detectExplorer(url: string): Explorer | null {
       return "etherscan";
     }
 
-    if (hostname === "blockscan.com" || hostname.endsWith(".blockscan.com")) {
-      return "blockscan";
+    if (hostname === "blockscout.com" || hostname.endsWith(".blockscout.com")) {
+      return "blockscout";
     }
 
     if (hostname === "debank.com") {
@@ -58,7 +59,7 @@ function parseAddressFromURL(url: string): AddressParseResult {
     const pathname = urlObj.pathname;
     let address: string | null = null;
 
-    if (explorer === "etherscan" || explorer === "blockscan") {
+    if (explorer === "etherscan" || explorer === "blockscout") {
       const addressMatch = pathname.match(/\/address\/([^\/\?#]+)/);
       if (addressMatch && addressMatch[1]) {
         address = addressMatch[1];
@@ -101,26 +102,35 @@ let popstateHandler: (() => void) | null = null;
 async function detectAndProcessAddress(): Promise<void> {
   const result = parseAddressFromURL(window.location.href);
 
-  if (result.isValid && result.address) {
+  if (result.isValid && result.address && result.explorer) {
     if (result.address === lastProcessedAddress) {
       return;
     }
 
     lastProcessedAddress = result.address;
-    console.log(`Address detected: ${result.address} on ${result.explorer}`);
+    console.log(`[Ethoscan] Address detected: ${result.address} on ${result.explorer}`);
+
+    const anchor = await findAnchorPoint(result.explorer);
+
+    if (!anchor) {
+      console.error(`[Ethoscan] Failed to find DOM anchor point for ${result.explorer}`);
+      return;
+    }
+
+    console.log(`[Ethoscan] Found anchor point with ${anchor.confidence} confidence`);
 
     const apiResult = await fetchEthosProfile(result.address);
 
     if (apiResult.success) {
       const profile = normalizeEthosData(apiResult.data);
-      console.log("Normalized Ethos profile:", profile);
+      console.log("[Ethoscan] Normalized Ethos profile:", profile);
     } else {
-      console.error("Failed to fetch Ethos profile:", apiResult.error);
+      console.error("[Ethoscan] Failed to fetch Ethos profile:", apiResult.error);
     }
   } else {
     if (lastProcessedAddress !== null) {
       lastProcessedAddress = null;
-      console.log("No valid Ethereum address found in URL");
+      console.log("[Ethoscan] No valid Ethereum address found in URL");
     }
   }
 }
