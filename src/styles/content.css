@@ -1,2 +1,125 @@
-@import "tailwindcss";
+@import "tailwindcss" prefix(ethoscan);
 @plugin "daisyui";
+
+/* Widget Container - Layout Stability */
+.ethoscan-widget {
+  all: initial;
+  display: block;
+  box-sizing: border-box;
+
+  min-height: 120px;
+  width: 100%;
+  max-width: 600px;
+
+  margin-top: 16px;
+  margin-bottom: 16px;
+  padding: 16px;
+
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  background-color: #ffffff;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  color: #000000;
+}
+
+.ethoscan-widget * {
+  box-sizing: border-box;
+}
+
+/* Header Section */
+.ethoscan-widget__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.ethoscan-widget__title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.ethoscan-widget__link {
+  font-size: 0.875rem;
+  color: #2563eb;
+  text-decoration: none;
+}
+
+.ethoscan-widget__link:hover {
+  text-decoration: underline;
+}
+
+/* Score Section */
+.ethoscan-widget__score-section {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.ethoscan-widget__score {
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.ethoscan-widget__level {
+  padding: 4px 12px;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-transform: capitalize;
+  color: #ffffff;
+}
+
+/* Stats Grid */
+.ethoscan-widget__stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.ethoscan-widget__stat {
+  text-align: center;
+}
+
+.ethoscan-widget__stat-value {
+  display: block;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.ethoscan-widget__stat-label {
+  display: block;
+  font-size: 0.75rem;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Error State */
+.ethoscan-widget--error {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 60px;
+  background-color: #fef2f2;
+  border-color: #fca5a5;
+}
+
+.ethoscan-widget__error-icon {
+  font-size: 1.5rem;
+}
+
+.ethoscan-widget__error-message {
+  font-size: 0.875rem;
+  color: #991b1b;
+}

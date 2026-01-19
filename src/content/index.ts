@@ -2,6 +2,7 @@ import "../styles/content.css";
 import type { Explorer, AddressParseResult } from "../shared/types";
 import { fetchEthosProfile, normalizeEthosData } from "../api/ethos";
 import { findAnchorPoint } from "./dom-anchor.js";
+import { renderWidget, removeExistingWidgets } from "./ui-renderer.js";
 
 function validateEthereumAddress(address: string): boolean {
   if (!address || typeof address !== "string") {
@@ -123,14 +124,17 @@ async function detectAndProcessAddress(): Promise<void> {
 
     if (apiResult.success) {
       const profile = normalizeEthosData(apiResult.data);
-      console.log("[Ethoscan] Normalized Ethos profile:", profile);
+      console.log("[Ethoscan] Rendering widget for:", result.address);
+      renderWidget(profile, anchor, result.address);
     } else {
-      console.error("[Ethoscan] Failed to fetch Ethos profile:", apiResult.error);
+      console.error("[Ethoscan] API Error:", apiResult.error);
+      renderWidget(null, anchor, result.address);
     }
   } else {
     if (lastProcessedAddress !== null) {
       lastProcessedAddress = null;
-      console.log("[Ethoscan] No valid Ethereum address found in URL");
+      removeExistingWidgets();
+      console.log("[Ethoscan] Cleaned up widgets - no valid address");
     }
   }
 }
