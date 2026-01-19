@@ -15,8 +15,8 @@
         "https://*.blockscan.com/address/*",
         "https://debank.com/profile/*"
       ],
-      "js": ["dist/content.js"],
-      "css": ["dist/content.css"]
+      "js": ["content.js"],
+      "css": ["content.css"]
     }
   ]
 }
