@@ -1,5 +1,6 @@
 import "../styles/content.css";
 import type { Explorer, AddressParseResult } from "../shared/types";
+import { fetchEthosProfile } from "../api/ethos";
 
 function validateEthereumAddress(address: string): boolean {
   if (!address || typeof address !== "string") {
@@ -95,8 +96,9 @@ function parseAddressFromURL(url: string): AddressParseResult {
 
 let lastProcessedAddress: string | null = null;
 let urlCheckInterval: number | null = null;
+let popstateHandler: (() => void) | null = null;
 
-function detectAndProcessAddress(): void {
+async function detectAndProcessAddress(): Promise<void> {
   const result = parseAddressFromURL(window.location.href);
 
   if (result.isValid && result.address) {
@@ -106,6 +108,14 @@ function detectAndProcessAddress(): void {
 
     lastProcessedAddress = result.address;
     console.log(`Address detected: ${result.address} on ${result.explorer}`);
+
+    const apiResult = await fetchEthosProfile(result.address);
+
+    if (apiResult.success) {
+      console.log("Ethos profile fetched:", apiResult.data);
+    } else {
+      console.error("Failed to fetch Ethos profile:", apiResult.error);
+    }
   } else {
     if (lastProcessedAddress !== null) {
       lastProcessedAddress = null;
@@ -115,15 +125,21 @@ function detectAndProcessAddress(): void {
 }
 
 function startNavigationMonitoring(): void {
-  window.addEventListener("popstate", detectAndProcessAddress);
+  popstateHandler = () => {
+    void detectAndProcessAddress();
+  };
+  window.addEventListener("popstate", popstateHandler);
 
   urlCheckInterval = window.setInterval(() => {
-    detectAndProcessAddress();
+    void detectAndProcessAddress();
   }, 500);
 }
 
 function stopNavigationMonitoring(): void {
-  window.removeEventListener("popstate", detectAndProcessAddress);
+  if (popstateHandler !== null) {
+    window.removeEventListener("popstate", popstateHandler);
+    popstateHandler = null;
+  }
   if (urlCheckInterval !== null) {
     clearInterval(urlCheckInterval);
     urlCheckInterval = null;
@@ -131,7 +147,7 @@ function stopNavigationMonitoring(): void {
 }
 
 function init(): void {
-  detectAndProcessAddress();
+  void detectAndProcessAddress();
   startNavigationMonitoring();
 }
 
