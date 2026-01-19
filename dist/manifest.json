@@ -1,0 +1,22 @@
+{
+  "manifest_version": 3,
+  "name": "Ethoscan",
+  "version": "0.1.0",
+  "description": "Inline Ethos reputation data on blockchain explorer address pages",
+
+  "permissions": ["activeTab"],
+
+  "content_scripts": [
+    {
+      "matches": [
+        "https://etherscan.io/address/*",
+        "https://*.etherscan.io/address/*",
+        "https://blockscan.com/address/*",
+        "https://*.blockscan.com/address/*",
+        "https://debank.com/profile/*"
+      ],
+      "js": ["content.js"],
+      "css": ["content.css"]
+    }
+  ]
+}

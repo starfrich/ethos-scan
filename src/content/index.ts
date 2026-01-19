@@ -93,15 +93,49 @@ function parseAddressFromURL(url: string): AddressParseResult {
   }
 }
 
-function init(): void {
+let lastProcessedAddress: string | null = null;
+let urlCheckInterval: number | null = null;
+
+function detectAndProcessAddress(): void {
   const result = parseAddressFromURL(window.location.href);
 
   if (result.isValid && result.address) {
+    if (result.address === lastProcessedAddress) {
+      return;
+    }
+
+    lastProcessedAddress = result.address;
     console.log(`Address detected: ${result.address} on ${result.explorer}`);
   } else {
-    console.log("No valid Ethereum address found in URL");
+    if (lastProcessedAddress !== null) {
+      lastProcessedAddress = null;
+      console.log("No valid Ethereum address found in URL");
+    }
   }
 }
+
+function startNavigationMonitoring(): void {
+  window.addEventListener("popstate", detectAndProcessAddress);
+
+  urlCheckInterval = window.setInterval(() => {
+    detectAndProcessAddress();
+  }, 500);
+}
+
+function stopNavigationMonitoring(): void {
+  window.removeEventListener("popstate", detectAndProcessAddress);
+  if (urlCheckInterval !== null) {
+    clearInterval(urlCheckInterval);
+    urlCheckInterval = null;
+  }
+}
+
+function init(): void {
+  detectAndProcessAddress();
+  startNavigationMonitoring();
+}
+
+window.addEventListener("beforeunload", stopNavigationMonitoring);
 
 if (document.readyState === "loading") {
   document.addEventListener("DOMContentLoaded", init);
