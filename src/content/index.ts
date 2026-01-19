@@ -1,6 +1,6 @@
 import "../styles/content.css";
 import type { Explorer, AddressParseResult } from "../shared/types";
-import { fetchEthosProfile } from "../api/ethos";
+import { fetchEthosProfile, normalizeEthosData } from "../api/ethos";
 
 function validateEthereumAddress(address: string): boolean {
   if (!address || typeof address !== "string") {
@@ -112,7 +112,8 @@ async function detectAndProcessAddress(): Promise<void> {
     const apiResult = await fetchEthosProfile(result.address);
 
     if (apiResult.success) {
-      console.log("Ethos profile fetched:", apiResult.data);
+      const profile = normalizeEthosData(apiResult.data);
+      console.log("Normalized Ethos profile:", profile);
     } else {
       console.error("Failed to fetch Ethos profile:", apiResult.error);
     }

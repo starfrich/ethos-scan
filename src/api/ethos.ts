@@ -1,4 +1,4 @@
-import type { EthosApiResult, EthosApiUserResponse } from "../shared/types";
+import type { EthosApiResult, EthosApiUserResponse, EthosProfile } from "../shared/types";
 
 const ETHOS_API_BASE = "https://api.ethos.network/api/v2";
 const CLIENT_HEADER = "ethoscan@1.0.0";
@@ -74,6 +74,14 @@ export async function fetchEthosProfile(address: string): Promise<EthosApiResult
   }
 }
 
+function validateScore(score: number): number {
+  if (typeof score !== "number" || isNaN(score) || !isFinite(score)) {
+    return 0;
+  }
+
+  return Math.floor(Math.max(0, Math.min(2800, score)));
+}
+
 export function getScoreLevelInfo(score: number): { level: string; color: string } {
   if (score < 800) {
     return { level: "untrusted", color: "#b72b38" };
@@ -103,4 +111,37 @@ export function getScoreLevelInfo(score: number): { level: string; color: string
     return { level: "revered", color: "#836DA6" };
   }
   return { level: "renowned", color: "#7A5EAF" };
+}
+
+export function normalizeEthosData(raw: EthosApiUserResponse): EthosProfile {
+  const score = validateScore(raw.score);
+
+  const { level, color } = getScoreLevelInfo(score);
+
+  const isActive = raw.status === "active";
+
+  const reviewStats = {
+    negative: raw.stats?.review?.received?.negative ?? 0,
+    neutral: raw.stats?.review?.received?.neutral ?? 0,
+    positive: raw.stats?.review?.received?.positive ?? 0,
+  };
+
+  const normalizeString = (value: string | null | undefined): string | undefined => {
+    return value && value.trim() !== "" ? value : undefined;
+  };
+
+  return {
+    score,
+    level,
+    color,
+    isActive,
+    displayName: normalizeString(raw.displayName),
+    username: normalizeString(raw.username),
+    avatarUrl: normalizeString(raw.avatarUrl),
+    reviewStats,
+    links: {
+      profile: raw.links.profile,
+      scoreBreakdown: raw.links.scoreBreakdown,
+    },
+  };
 }

@@ -3,14 +3,23 @@ export type Explorer = "etherscan" | "blockscan" | "debank";
 export interface EthosProfile {
   score: number;
   level: string;
+  color: string;
   isActive: boolean;
   displayName?: string;
   username?: string;
   avatarUrl?: string;
-  reviewStats?: {
+  reviewStats: {
     negative: number;
     neutral: number;
     positive: number;
+  };
+  links: {
+    profile: string;
+    scoreBreakdown: string;
+  };
+  lastReview?: {
+    text: string;
+    timestamp: string;
   };
 }
 
