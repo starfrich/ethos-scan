@@ -4,13 +4,7 @@
   "version": "0.1.0",
   "description": "Inline Ethos reputation data on blockchain explorer address pages",
 
-  "host_permissions": [
-    "https://etherscan.io/*",
-    "https://*.etherscan.io/*",
-    "https://blockscan.com/*",
-    "https://*.blockscan.com/*",
-    "https://debank.com/*"
-  ],
+  "permissions": ["activeTab"],
 
   "content_scripts": [
     {
