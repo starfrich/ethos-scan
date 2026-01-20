@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ethoscan Settings</title>
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body>
+    <div class="ethoscan-popup-container">
+      <!-- Header Section -->
+      <div class="ethoscan-popup-header">
+        <div class="ethoscan-popup-logo">
+          <svg class="ethoscan-logo-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 2L2 7v10c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-10-5z"/>
+          </svg>
+        </div>
+        <h1 class="ethoscan-popup-title">Ethoscan</h1>
+        <a href="https://ethos.network" target="_blank" rel="noopener noreferrer" class="ethoscan-popup-link">
+          ethos.network
+        </a>
+      </div>
+
+      <div class="ethoscan:divider"></div>
+
+      <!-- Explorer Toggle Section -->
+      <div class="ethoscan-popup-section">
+        <h2 class="ethoscan-section-title">Explorers</h2>
+
+        <div class="ethoscan-toggle-row">
+          <label class="ethoscan-toggle-label" for="toggle-etherscan">Enable Etherscan</label>
+          <input
+            type="checkbox"
+            id="toggle-etherscan"
+            data-explorer="etherscan"
+            class="ethoscan:toggle ethoscan:toggle-primary"
+            checked
+          />
+        </div>
+
+        <div class="ethoscan-toggle-row">
+          <label class="ethoscan-toggle-label" for="toggle-blockscout">Enable Blockscout</label>
+          <input
+            type="checkbox"
+            id="toggle-blockscout"
+            data-explorer="blockscout"
+            class="ethoscan:toggle ethoscan:toggle-primary"
+            checked
+          />
+        </div>
+
+        <div class="ethoscan-toggle-row">
+          <label class="ethoscan-toggle-label" for="toggle-debank">Enable Debank</label>
+          <input
+            type="checkbox"
+            id="toggle-debank"
+            data-explorer="debank"
+            class="ethoscan:toggle ethoscan:toggle-primary"
+            checked
+          />
+        </div>
+      </div>
+
+      <div class="ethoscan:divider"></div>
+
+      <!-- Footer Section -->
+      <div class="ethoscan-popup-footer">
+        <div class="ethoscan-footer-links">
+          <a href="https://github.com/ethos/ethoscan" target="_blank" rel="noopener noreferrer" class="ethoscan:link">
+            GitHub
+          </a>
+          <span class="ethoscan-link-separator">•</span>
+          <a href="https://docs.ethos.network" target="_blank" rel="noopener noreferrer" class="ethoscan:link">
+            Docs
+          </a>
+          <span class="ethoscan-link-separator">•</span>
+          <a href="https://ethos.network" target="_blank" rel="noopener noreferrer" class="ethoscan:link">
+            Ethos
+          </a>
+        </div>
+        <div class="ethoscan-version" id="version">v0.1.0</div>
+      </div>
+    </div>
+
+    <script type="module" src="popup.js"></script>
+  </body>
+</html>

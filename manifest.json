@@ -2,9 +2,14 @@
   "manifest_version": 3,
   "name": "Ethoscan",
   "version": "0.1.0",
-  "description": "Inline Ethos reputation data on blockchain explorer address pages",
+  "description": "Ethoscan is a browser extension that displays first party Ethos reputation data inline on blockchain explorer address pages.",
 
-  "permissions": ["activeTab"],
+  "permissions": ["activeTab", "storage"],
+
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Ethoscan Settings"
+  },
 
   "content_scripts": [
     {
@@ -24,6 +29,26 @@
       ],
       "js": ["content.js"],
       "css": ["content.css"]
+    }
+  ],
+
+  "web_accessible_resources": [
+    {
+      "resources": ["assets/*.js"],
+      "matches": [
+        "https://etherscan.io/*",
+        "https://basescan.org/*",
+        "https://polygonscan.com/*",
+        "https://bscscan.com/*",
+        "https://arbiscan.io/*",
+        "https://ftmscan.com/*",
+        "https://snowtrace.io/*",
+        "https://celoscan.io/*",
+        "https://moonscan.io/*",
+        "https://blockscout.com/*",
+        "https://*.blockscout.com/*",
+        "https://debank.com/*"
+      ]
     }
   ]
 }

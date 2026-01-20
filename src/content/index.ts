@@ -3,6 +3,7 @@ import type { Explorer, AddressParseResult } from "../shared/types";
 import { fetchEthosProfile, normalizeEthosData } from "../api/ethos";
 import { findAnchorPoint } from "./dom-anchor.js";
 import { renderWidget, removeExistingWidgets } from "./ui-renderer.js";
+import { getSettings } from "../shared/storage";
 
 function validateEthereumAddress(address: string): boolean {
   if (!address || typeof address !== "string") {
@@ -110,6 +111,17 @@ async function detectAndProcessAddress(): Promise<void> {
   const result = parseAddressFromURL(window.location.href);
 
   if (result.isValid && result.address && result.explorer) {
+    const settings = await getSettings();
+
+    if (!settings[result.explorer]) {
+      if (lastProcessedAddress !== null) {
+        lastProcessedAddress = null;
+        removeExistingWidgets();
+        console.log(`[Ethoscan] Explorer ${result.explorer} is disabled in settings`);
+      }
+      return;
+    }
+
     if (result.address === lastProcessedAddress) {
       return;
     }
@@ -166,6 +178,12 @@ function stopNavigationMonitoring(): void {
     urlCheckInterval = null;
   }
 }
+
+chrome.runtime.onMessage.addListener((message: { type: string }) => {
+  if (message.type === 'SETTINGS_UPDATED') {
+    void detectAndProcessAddress();
+  }
+});
 
 function init(): void {
   void detectAndProcessAddress();

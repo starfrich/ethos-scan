@@ -9,11 +9,21 @@ export default defineConfig({
     emptyOutDir: true,
     rollupOptions: {
       input: {
-        content: resolve(__dirname, 'src/content/index.ts')
+        content: resolve(__dirname, 'src/content/index.ts'),
+        popup: resolve(__dirname, 'src/popup/popup.html')
       },
       output: {
-        entryFileNames: '[name].js',
-        assetFileNames: '[name].[ext]'
+        entryFileNames: (chunkInfo) => {
+          return chunkInfo.name === 'content' ? 'content.js' : '[name].js';
+        },
+        assetFileNames: '[name].[ext]',
+        chunkFileNames: '[name].js',
+        format: 'iife',
+        manualChunks: (id) => {
+          if (id.includes('src/content') || id.includes('src/shared') || id.includes('src/api')) {
+            return 'content';
+          }
+        }
       }
     }
   }

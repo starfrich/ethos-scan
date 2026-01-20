@@ -1,0 +1,76 @@
+@import "tailwindcss" prefix(ethoscan);
+@plugin "daisyui";
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  @apply ethoscan:m-0 ethoscan:p-0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+.ethoscan-popup-container {
+  @apply ethoscan:w-80 ethoscan:p-4 ethoscan:bg-base-100 ethoscan:text-base-content;
+  min-height: 400px;
+}
+
+.ethoscan-popup-header {
+  @apply ethoscan:flex ethoscan:flex-col ethoscan:items-center ethoscan:gap-2 ethoscan:mb-4;
+}
+
+.ethoscan-popup-logo {
+  @apply ethoscan:flex ethoscan:items-center ethoscan:justify-center;
+}
+
+.ethoscan-logo-icon {
+  @apply ethoscan:w-12 ethoscan:h-12 ethoscan:text-primary;
+}
+
+.ethoscan-popup-title {
+  @apply ethoscan:text-2xl ethoscan:font-bold ethoscan:text-base-content;
+}
+
+.ethoscan-popup-link {
+  @apply ethoscan:text-sm ethoscan:text-primary ethoscan:hover:underline;
+  text-decoration: none;
+}
+
+.ethoscan-popup-section {
+  @apply ethoscan:my-4 ethoscan:p-3 ethoscan:rounded-lg ethoscan:bg-base-200;
+}
+
+.ethoscan-section-title {
+  @apply ethoscan:text-lg ethoscan:font-semibold ethoscan:mb-3 ethoscan:text-base-content;
+}
+
+.ethoscan-toggle-row {
+  @apply ethoscan:flex ethoscan:items-center ethoscan:justify-between ethoscan:py-2;
+}
+
+.ethoscan-toggle-row:not(:last-child) {
+  @apply ethoscan:border-b ethoscan:border-base-300;
+}
+
+.ethoscan-toggle-label {
+  @apply ethoscan:text-sm ethoscan:font-medium ethoscan:text-base-content;
+  cursor: pointer;
+}
+
+.ethoscan-popup-footer {
+  @apply ethoscan:flex ethoscan:flex-col ethoscan:items-center ethoscan:gap-2 ethoscan:mt-4;
+}
+
+.ethoscan-footer-links {
+  @apply ethoscan:flex ethoscan:items-center ethoscan:gap-2;
+}
+
+.ethoscan-link-separator {
+  @apply ethoscan:text-base-content ethoscan:opacity-50;
+}
+
+.ethoscan-version {
+  @apply ethoscan:text-xs ethoscan:text-base-content ethoscan:opacity-60;
+}
