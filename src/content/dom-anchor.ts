@@ -70,15 +70,15 @@ export function getAnchorConfig(explorer: Explorer): AnchorConfig {
         explorer,
         selectors: [
           {
-            query: "#ContentPlaceHolder1_divSummary",
-            strategy: "prepend",
-          },
-          {
-            query: "#ContentPlaceHolder1_divENSName",
+            query: ".container.py-3",
             strategy: "after",
           },
           {
             query: "section.container-xxl",
+            strategy: "after",
+          },
+          {
+            query: "#ContentPlaceHolder1_divSummary",
             strategy: "prepend",
           },
         ],

@@ -125,10 +125,10 @@ async function detectAndProcessAddress(): Promise<void> {
     if (apiResult.success) {
       const profile = normalizeEthosData(apiResult.data);
       console.log("[Ethoscan] Rendering widget for:", result.address);
-      renderWidget(profile, anchor, result.address);
+      renderWidget(profile, anchor, result.address, result.explorer);
     } else {
       console.error("[Ethoscan] API Error:", apiResult.error);
-      renderWidget(null, anchor, result.address);
+      renderWidget(null, anchor, result.address, result.explorer);
     }
   } else {
     if (lastProcessedAddress !== null) {

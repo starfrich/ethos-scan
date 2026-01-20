@@ -1,4 +1,4 @@
-import type { EthosProfile, AnchorPoint } from "../shared/types.js";
+import type { EthosProfile, AnchorPoint, Explorer } from "../shared/types.js";
 import { getContrastTextColor } from "../shared/color-utils.js";
 
 const WIDGET_CLASS = "ethoscan-widget";
@@ -7,31 +7,46 @@ const WIDGET_ID_ATTR = "data-ethoscan-id";
 export function renderWidget(
   profile: EthosProfile | null,
   anchorPoint: AnchorPoint,
-  address: string
+  address: string,
+  explorer: Explorer
 ): void {
   requestAnimationFrame(() => {
     removeExistingWidgets();
 
+    const isCompact = explorer === "etherscan";
+
     const widget = profile
-      ? createEthosWidget(profile)
+      ? createEthosWidget(profile, isCompact)
       : createErrorWidget("Unable to load Ethos profile");
 
     widget.setAttribute(WIDGET_ID_ATTR, address.toLowerCase());
+    widget.setAttribute("data-ethoscan-explorer", explorer);
 
     injectWidget(widget, anchorPoint);
   });
 }
 
-function createEthosWidget(profile: EthosProfile): HTMLElement {
-  const widget = createElement("div", WIDGET_CLASS);
+function createEthosWidget(
+  profile: EthosProfile,
+  isCompact: boolean
+): HTMLElement {
+  if (isCompact) {
+    const section = document.createElement("section");
+    section.className = "container py-3";
+    section.setAttribute(WIDGET_ID_ATTR, "");
 
-  const header = createHeader(profile);
-  const content = createContent(profile);
+    const card = createCompactContent(profile);
+    section.appendChild(card);
 
-  widget.appendChild(header);
-  widget.appendChild(content);
-
-  return widget;
+    return section;
+  } else {
+    const widget = createElement("div", WIDGET_CLASS);
+    const header = createHeader(profile);
+    const content = createContent(profile);
+    widget.appendChild(header);
+    widget.appendChild(content);
+    return widget;
+  }
 }
 
 function createHeader(profile: EthosProfile): HTMLElement {
@@ -117,6 +132,44 @@ function createStat(value: string, label: string): HTMLElement {
   return stat;
 }
 
+function createCompactContent(profile: EthosProfile): HTMLElement {
+  const card = createElement("div", "card h-100 mb-3");
+
+  const cardBody = createElement("div", "card-body d-flex flex-row flex-wrap align-items-center");
+  cardBody.style.gap = ".5rem";
+
+  const label = createElement("span", "text-muted small fw-semibold", "Ethos:");
+
+  const score = createElement("span", "ethoscan-widget__compact-score");
+  score.style.color = profile.color;
+  score.textContent = profile.score.toString();
+
+  const level = createElement("span", "badge ethoscan-widget__compact-level");
+  level.style.backgroundColor = profile.color;
+  level.style.color = getContrastTextColor(profile.color);
+  level.textContent = profile.level;
+
+  const link = document.createElement("a");
+  link.className = "link-primary small text-decoration-none";
+  link.href = profile.links.profile;
+  link.target = "_blank";
+  link.rel = "noopener noreferrer";
+  link.textContent = "View Profile";
+
+  const stats = createElement("span", "text-muted small ms-auto");
+  stats.textContent = `${profile.reviewStats.positive} Positive · ${profile.reviewStats.neutral} Neutral · ${profile.reviewStats.negative} Negative`;
+
+  cardBody.appendChild(label);
+  cardBody.appendChild(score);
+  cardBody.appendChild(level);
+  cardBody.appendChild(link);
+  cardBody.appendChild(stats);
+
+  card.appendChild(cardBody);
+
+  return card;
+}
+
 function createErrorWidget(errorMessage: string): HTMLElement {
   const widget = createElement("div", `${WIDGET_CLASS} ${WIDGET_CLASS}--error`);
 
@@ -175,12 +228,18 @@ function injectWidget(widget: HTMLElement, anchorPoint: AnchorPoint): void {
 
 export function removeExistingWidgets(): void {
   const existingWidgets = document.querySelectorAll(`.${WIDGET_CLASS}`);
+  const existingSections = document.querySelectorAll(`section[${WIDGET_ID_ATTR}]`);
 
   existingWidgets.forEach((widget) => {
     widget.remove();
   });
 
-  if (existingWidgets.length > 0) {
-    console.log(`[Ethoscan] Removed ${existingWidgets.length} existing widget(s)`);
+  existingSections.forEach((section) => {
+    section.remove();
+  });
+
+  const totalRemoved = existingWidgets.length + existingSections.length;
+  if (totalRemoved > 0) {
+    console.log(`[Ethoscan] Removed ${totalRemoved} existing widget(s)`);
   }
 }

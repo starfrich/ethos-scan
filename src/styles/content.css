@@ -122,3 +122,19 @@
   font-size: 0.875rem;
   color: #991b1b;
 }
+
+/* Compact Mode (Etherscan) - Uses Bootstrap classes for auto theme */
+
+/* Compact mode components inherit Bootstrap styling */
+.ethoscan-widget__compact-score {
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.ethoscan-widget__compact-level {
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 0.813rem;
+  font-weight: 600;
+  text-transform: capitalize;
+}
