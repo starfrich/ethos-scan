@@ -1,4 +1,5 @@
 import type { EthosProfile, AnchorPoint } from "../shared/types.js";
+import { getContrastTextColor } from "../shared/color-utils.js";
 
 const WIDGET_CLASS = "ethoscan-widget";
 const WIDGET_ID_ATTR = "data-ethoscan-id";
@@ -72,10 +73,12 @@ function createScoreSection(profile: EthosProfile): HTMLElement {
 
   const score = createElement("div", "ethoscan-widget__score");
   score.style.color = profile.color;
+  score.style.textShadow = '0 0 8px rgba(255, 255, 255, 0.9), 0 0 2px rgba(0, 0, 0, 0.3)';
   score.textContent = profile.score.toString();
 
   const level = createElement("div", "ethoscan-widget__level");
   level.style.backgroundColor = profile.color;
+  level.style.color = getContrastTextColor(profile.color);
   level.textContent = profile.level;
 
   section.appendChild(score);
