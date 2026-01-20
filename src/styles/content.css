@@ -138,3 +138,93 @@
   font-weight: 600;
   text-transform: capitalize;
 }
+
+/* DeBank Style - Match DeBank native format exactly */
+.ethoscan-widget--debank {
+  all: initial;
+  display: contents;
+  box-sizing: border-box;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.ethoscan-widget--debank * {
+  box-sizing: border-box;
+}
+
+.ethoscan-widget__debank-container {
+  display: contents;
+}
+
+.ethoscan-widget__debank-divider {
+  width: 1px;
+  height: 32px;
+  background: rgb(225, 229, 242);
+  margin: 0 20px 0 0;
+}
+
+.ethoscan-widget__debank-item {
+  display: flex;
+  flex-direction: column;
+  gap: normal;
+  padding: 0;
+  margin: 0 20px 0 0;
+  align-items: normal;
+  min-height: 41px;
+  justify-content: center;
+}
+
+.ethoscan-widget__debank-title {
+  font-size: 12px;
+  font-weight: 400;
+  color: rgb(139, 147, 167);
+  line-height: 18px;
+  letter-spacing: normal;
+  text-transform: none;
+  margin: 0;
+}
+
+.ethoscan-widget__debank-value {
+  font-size: 14px;
+  font-weight: 700;
+  color: rgb(25, 35, 60);
+  line-height: 21px;
+  margin: 2px 0 0 0;
+  text-transform: capitalize;
+}
+
+.ethoscan-widget__debank-link {
+  font-size: 12px;
+  font-weight: 400;
+  color: rgb(139, 147, 167);
+  text-decoration: none;
+  align-self: center;
+  transition: color 0.2s;
+}
+
+.ethoscan-widget__debank-link:hover {
+  color: rgb(100, 110, 140);
+  text-decoration: underline;
+}
+
+/* DeBank Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+  .ethoscan-widget__debank-divider {
+    background: rgb(60, 70, 90);
+  }
+
+  .ethoscan-widget__debank-title {
+    color: rgb(139, 147, 167);
+  }
+
+  .ethoscan-widget__debank-value {
+    color: rgb(255, 255, 255);
+  }
+
+  .ethoscan-widget__debank-link {
+    color: rgb(139, 147, 167);
+  }
+
+  .ethoscan-widget__debank-link:hover {
+    color: rgb(180, 190, 210);
+  }
+}

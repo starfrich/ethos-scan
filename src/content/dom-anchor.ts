@@ -109,16 +109,12 @@ export function getAnchorConfig(explorer: Explorer): AnchorConfig {
         explorer,
         selectors: [
           {
-            query: '[class*="ProfileHeader"]',
+            query: '[class*="HeaderInfo_leftContent"]',
             strategy: "append",
           },
           {
-            query: '[class*="UserInfo"]',
-            strategy: "after",
-          },
-          {
-            query: "main > div:first-child",
-            strategy: "prepend",
+            query: '[class*="HeaderInfo_userInfoContainer"]',
+            strategy: "append",
           },
         ],
         fallbackSelector: "main",

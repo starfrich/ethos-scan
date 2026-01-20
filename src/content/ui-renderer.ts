@@ -14,9 +14,10 @@ export function renderWidget(
     removeExistingWidgets();
 
     const isCompact = explorer === "etherscan";
+    const isDebank = explorer === "debank";
 
     const widget = profile
-      ? createEthosWidget(profile, isCompact)
+      ? createEthosWidget(profile, isCompact, isDebank)
       : createErrorWidget("Unable to load Ethos profile");
 
     widget.setAttribute(WIDGET_ID_ATTR, address.toLowerCase());
@@ -28,7 +29,8 @@ export function renderWidget(
 
 function createEthosWidget(
   profile: EthosProfile,
-  isCompact: boolean
+  isCompact: boolean,
+  isDebank: boolean
 ): HTMLElement {
   if (isCompact) {
     const section = document.createElement("section");
@@ -39,6 +41,11 @@ function createEthosWidget(
     section.appendChild(card);
 
     return section;
+  } else if (isDebank) {
+    const widget = createElement("div", `${WIDGET_CLASS} ${WIDGET_CLASS}--debank`);
+    const content = createDebankContent(profile);
+    widget.appendChild(content);
+    return widget;
   } else {
     const widget = createElement("div", WIDGET_CLASS);
     const header = createHeader(profile);
@@ -168,6 +175,57 @@ function createCompactContent(profile: EthosProfile): HTMLElement {
   card.appendChild(cardBody);
 
   return card;
+}
+
+function createDebankContent(profile: EthosProfile): HTMLElement {
+  const container = createElement("div", "ethoscan-widget__debank-container");
+
+  const divider = createElement("div", "ethoscan-widget__debank-divider");
+
+  const scoreItem = createElement("div", "ethoscan-widget__debank-item");
+  const scoreTitle = createElement("div", "ethoscan-widget__debank-title", "Ethos Score");
+  const scoreValue = createElement("div", "ethoscan-widget__debank-value");
+  scoreValue.style.color = profile.color;
+  scoreValue.textContent = profile.score.toString();
+  scoreItem.appendChild(scoreTitle);
+  scoreItem.appendChild(scoreValue);
+
+  const levelItem = createElement("div", "ethoscan-widget__debank-item");
+  const levelTitle = createElement("div", "ethoscan-widget__debank-title", "Level");
+  const levelValue = createElement("div", "ethoscan-widget__debank-value");
+  levelValue.style.color = profile.color;
+  levelValue.textContent = profile.level;
+  levelItem.appendChild(levelTitle);
+  levelItem.appendChild(levelValue);
+
+  const reviewsItem = createElement("div", "ethoscan-widget__debank-item");
+  const reviewsTitle = createElement("div", "ethoscan-widget__debank-title", "Reviews");
+  const reviewsValue = createElement("div", "ethoscan-widget__debank-value");
+  reviewsValue.textContent = `${profile.reviewStats.positive} Positive · ${profile.reviewStats.neutral} Neutral · ${profile.reviewStats.negative} Negative`;
+  reviewsValue.style.fontSize = "12px";
+  reviewsValue.style.fontWeight = "400";
+  reviewsValue.style.color = "rgb(139, 147, 167)";
+  reviewsItem.appendChild(reviewsTitle);
+  reviewsItem.appendChild(reviewsValue);
+
+  const link = document.createElement("a");
+  link.className = "ethoscan-widget__debank-link";
+  link.href = profile.links.profile;
+  link.target = "_blank";
+  link.rel = "noopener noreferrer";
+  link.textContent = "View Profile →";
+  link.style.fontSize = "12px";
+  link.style.color = "rgb(139, 147, 167)";
+  link.style.textDecoration = "none";
+  link.style.alignSelf = "center";
+
+  container.appendChild(divider);
+  container.appendChild(scoreItem);
+  container.appendChild(levelItem);
+  container.appendChild(reviewsItem);
+  container.appendChild(link);
+
+  return container;
 }
 
 function createErrorWidget(errorMessage: string): HTMLElement {
