@@ -179,15 +179,30 @@ function stopNavigationMonitoring(): void {
   }
 }
 
-chrome.runtime.onMessage.addListener((message: { type: string }) => {
-  if (message.type === 'SETTINGS_UPDATED') {
-    void detectAndProcessAddress();
+// Silent fail if extension context is invalid
+try {
+  if (chrome.runtime?.id) {
+    chrome.runtime.onMessage.addListener((message: { type: string }) => {
+      if (message.type === 'SETTINGS_UPDATED') {
+        void detectAndProcessAddress();
+      }
+    });
   }
-});
+} catch (error) {
+  // Silent fail - extension context likely invalidated
+}
 
 function init(): void {
-  void detectAndProcessAddress();
-  startNavigationMonitoring();
+  // Only initialize if extension context is valid
+  try {
+    if (!chrome.runtime?.id) {
+      return;
+    }
+    void detectAndProcessAddress();
+    startNavigationMonitoring();
+  } catch (error) {
+    // Silent fail - extension context likely invalidated
+  }
 }
 
 window.addEventListener("beforeunload", stopNavigationMonitoring);

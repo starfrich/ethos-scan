@@ -13,10 +13,24 @@ export const DEFAULT_SETTINGS: ExplorerSettings = {
 const STORAGE_KEY = 'settings:explorers';
 
 export async function getSettings(): Promise<ExplorerSettings> {
-  const result = await chrome.storage.sync.get(STORAGE_KEY);
-  return (result[STORAGE_KEY] as ExplorerSettings) || DEFAULT_SETTINGS;
+  try {
+    if (!chrome.runtime?.id) {
+      return DEFAULT_SETTINGS;
+    }
+    const result = await chrome.storage.sync.get(STORAGE_KEY);
+    return (result[STORAGE_KEY] as ExplorerSettings) || DEFAULT_SETTINGS;
+  } catch (error) {
+    return DEFAULT_SETTINGS;
+  }
 }
 
 export async function saveSettings(settings: ExplorerSettings): Promise<void> {
-  await chrome.storage.sync.set({ [STORAGE_KEY]: settings });
+  try {
+    if (!chrome.runtime?.id) {
+      return;
+    }
+    await chrome.storage.sync.set({ [STORAGE_KEY]: settings });
+  } catch (error) {
+    // Silent fail
+  }
 }

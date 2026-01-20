@@ -22,15 +22,12 @@ body {
 }
 
 .ethoscan-popup-logo {
-  @apply ethoscan:flex ethoscan:items-center ethoscan:justify-center;
+  @apply ethoscan:flex ethoscan:items-center ethoscan:justify-center ethoscan:mb-3;
 }
 
-.ethoscan-logo-icon {
-  @apply ethoscan:w-12 ethoscan:h-12 ethoscan:text-primary;
-}
-
-.ethoscan-popup-title {
-  @apply ethoscan:text-2xl ethoscan:font-bold ethoscan:text-base-content;
+.ethoscan-logo-img {
+  @apply ethoscan:h-8;
+  width: auto;
 }
 
 .ethoscan-popup-link {

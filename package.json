@@ -8,7 +8,7 @@
     "build": "tsc && bun run build:content && bun run build:popup && bun run copy:files",
     "build:content": "vite build --config vite.content.config.js",
     "build:popup": "vite build --config vite.popup.config.js",
-    "copy:files": "cp manifest.json dist/manifest.json && cp dist/src/popup/popup.html dist/popup.html",
+    "copy:files": "cp manifest.json dist/manifest.json && cp dist/src/popup/popup.html dist/popup.html && cp public/icon.png dist/icon.png && mkdir -p dist/assets && cp src/assets/*.svg dist/assets/",
     "preview": "vite preview"
   },
   "devDependencies": {
