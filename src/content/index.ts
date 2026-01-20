@@ -26,7 +26,13 @@ function detectExplorer(url: string): Explorer | null {
     const urlObj = new URL(url);
     const hostname = urlObj.hostname.toLowerCase();
 
-    if (hostname === "etherscan.io" || hostname.endsWith(".etherscan.io")) {
+    if (
+      hostname === "etherscan.io" ||
+      hostname.endsWith(".etherscan.io") ||
+      hostname.endsWith("scan.com") ||
+      hostname.endsWith("scan.org") ||
+      hostname.endsWith("scan.io")
+    ) {
       return "etherscan";
     }
 

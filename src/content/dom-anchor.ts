@@ -91,11 +91,24 @@ export function getAnchorConfig(explorer: Explorer): AnchorConfig {
         explorer,
         selectors: [
           {
-            query: ".address-entity",
-            strategy: "after",
+            query: "div.css-82b7an",
+            strategy: "append",
           },
           {
-            query: 'a[href*="/name-services/domains/"]',
+            query: "h1.chakra-heading",
+            strategy: "after",
+            validator: (el: HTMLElement) => {
+              const text = el.textContent?.trim().toLowerCase() || "";
+              if (text === "address details" || text.startsWith("address details")) {
+                const parent = el.closest("div[class^='css-']");
+                const nextSibling = parent?.nextElementSibling;
+                return nextSibling?.classList.contains("css-82b7an") || nextSibling?.querySelector(".chakra-tag__root") !== null;
+              }
+              return false;
+            },
+          },
+          {
+            query: ".address-entity",
             strategy: "after",
           },
         ],

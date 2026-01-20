@@ -228,3 +228,98 @@
     color: rgb(180, 190, 210);
   }
 }
+
+/* Blockscout Compact Style - Inline badge integration */
+.ethoscan-widget--blockscout {
+  all: initial;
+  display: contents;
+  box-sizing: border-box;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.ethoscan-widget--blockscout * {
+  box-sizing: border-box;
+}
+
+.ethoscan-widget__blockscout-container {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  vertical-align: middle;
+  margin-left: 8px;
+}
+
+.ethoscan-widget__blockscout-divider {
+  width: 1px;
+  height: 20px;
+  background: rgba(0, 0, 0, 0.1);
+  margin: 0 4px;
+}
+
+.ethoscan-widget__blockscout-label {
+  font-size: 14px;
+  font-weight: 500;
+  color: rgba(0, 0, 0, 0.6);
+  margin: 0;
+}
+
+.ethoscan-widget__blockscout-score {
+  font-size: 16px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.ethoscan-widget__blockscout-level {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: capitalize;
+  margin: 0;
+  white-space: nowrap;
+}
+
+.ethoscan-widget__blockscout-stats {
+  font-size: 12px;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.5);
+  margin: 0;
+  white-space: nowrap;
+}
+
+.ethoscan-widget__blockscout-link {
+  font-size: 12px;
+  font-weight: 500;
+  color: #4E86B9;
+  text-decoration: none;
+  transition: color 0.2s;
+  margin: 0;
+  white-space: nowrap;
+}
+
+.ethoscan-widget__blockscout-link:hover {
+  color: #2E7BC3;
+  text-decoration: underline;
+}
+
+/* Blockscout Theme Support - Using Chakra UI class detection */
+html.dark .ethoscan-widget__blockscout-divider {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+html.dark .ethoscan-widget__blockscout-label {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+html.dark .ethoscan-widget__blockscout-stats {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+html.dark .ethoscan-widget__blockscout-link {
+  color: #4E86B9;
+}
+
+html.dark .ethoscan-widget__blockscout-link:hover {
+  color: #6BA3D6;
+}

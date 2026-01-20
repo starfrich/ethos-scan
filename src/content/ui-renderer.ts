@@ -15,9 +15,10 @@ export function renderWidget(
 
     const isCompact = explorer === "etherscan";
     const isDebank = explorer === "debank";
+    const isBlockscout = explorer === "blockscout";
 
     const widget = profile
-      ? createEthosWidget(profile, isCompact, isDebank)
+      ? createEthosWidget(profile, isCompact, isDebank, isBlockscout)
       : createErrorWidget("Unable to load Ethos profile");
 
     widget.setAttribute(WIDGET_ID_ATTR, address.toLowerCase());
@@ -30,7 +31,8 @@ export function renderWidget(
 function createEthosWidget(
   profile: EthosProfile,
   isCompact: boolean,
-  isDebank: boolean
+  isDebank: boolean,
+  isBlockscout: boolean
 ): HTMLElement {
   if (isCompact) {
     const section = document.createElement("section");
@@ -44,6 +46,11 @@ function createEthosWidget(
   } else if (isDebank) {
     const widget = createElement("div", `${WIDGET_CLASS} ${WIDGET_CLASS}--debank`);
     const content = createDebankContent(profile);
+    widget.appendChild(content);
+    return widget;
+  } else if (isBlockscout) {
+    const widget = createElement("div", `${WIDGET_CLASS} ${WIDGET_CLASS}--blockscout`);
+    const content = createBlockscoutContent(profile);
     widget.appendChild(content);
     return widget;
   } else {
@@ -223,6 +230,42 @@ function createDebankContent(profile: EthosProfile): HTMLElement {
   container.appendChild(scoreItem);
   container.appendChild(levelItem);
   container.appendChild(reviewsItem);
+  container.appendChild(link);
+
+  return container;
+}
+
+function createBlockscoutContent(profile: EthosProfile): HTMLElement {
+  const container = createElement("div", "ethoscan-widget__blockscout-container");
+
+  const divider = createElement("div", "ethoscan-widget__blockscout-divider");
+
+  const label = createElement("span", "ethoscan-widget__blockscout-label", "Ethos:");
+
+  const score = createElement("span", "ethoscan-widget__blockscout-score");
+  score.style.color = profile.color;
+  score.textContent = profile.score.toString();
+
+  const level = createElement("span", "ethoscan-widget__blockscout-level");
+  level.style.backgroundColor = profile.color;
+  level.style.color = getContrastTextColor(profile.color);
+  level.textContent = profile.level;
+
+  const stats = createElement("span", "ethoscan-widget__blockscout-stats");
+  stats.textContent = `${profile.reviewStats.positive} Positive · ${profile.reviewStats.neutral} Neutral · ${profile.reviewStats.negative} Negative`;
+
+  const link = document.createElement("a");
+  link.className = "ethoscan-widget__blockscout-link";
+  link.href = profile.links.profile;
+  link.target = "_blank";
+  link.rel = "noopener noreferrer";
+  link.textContent = "View Profile";
+
+  container.appendChild(divider);
+  container.appendChild(label);
+  container.appendChild(score);
+  container.appendChild(level);
+  container.appendChild(stats);
   container.appendChild(link);
 
   return container;

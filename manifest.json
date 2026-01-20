@@ -10,7 +10,14 @@
     {
       "matches": [
         "https://etherscan.io/address/*",
-        "https://*.etherscan.io/address/*",
+        "https://basescan.org/address/*",
+        "https://polygonscan.com/address/*",
+        "https://bscscan.com/address/*",
+        "https://arbiscan.io/address/*",
+        "https://ftmscan.com/address/*",
+        "https://snowtrace.io/address/*",
+        "https://celoscan.io/address/*",
+        "https://moonscan.io/address/*",
         "https://blockscout.com/address/*",
         "https://*.blockscout.com/address/*",
         "https://debank.com/profile/*"
