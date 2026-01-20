@@ -68,6 +68,12 @@ body {
   @apply ethoscan:text-base-content ethoscan:opacity-50;
 }
 
+.ethoscan-attribution {
+  @apply ethoscan:text-xs ethoscan:text-base-content ethoscan:opacity-50;
+  font-style: italic;
+  margin-top: 4px;
+}
+
 .ethoscan-version {
   @apply ethoscan:text-xs ethoscan:text-base-content ethoscan:opacity-60;
 }
