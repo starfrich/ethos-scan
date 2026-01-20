@@ -7,11 +7,17 @@ export default defineConfig({
   build: {
     outDir: 'dist',
     emptyOutDir: false,
+    cssCodeSplit: false,
     rollupOptions: {
       input: resolve(__dirname, 'src/content/index.ts'),
       output: {
         entryFileNames: 'content.js',
-        assetFileNames: '[name].[ext]',
+        assetFileNames: (assetInfo) => {
+          if (assetInfo.name?.endsWith('.css')) {
+            return 'content.css';
+          }
+          return '[name].[ext]';
+        },
         format: 'iife'
       }
     }
