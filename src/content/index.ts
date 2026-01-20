@@ -134,7 +134,7 @@ async function detectAndProcessAddress(): Promise<void> {
       renderWidget(profile, anchor, result.address, result.explorer);
     } else {
       console.error("[Ethoscan] API Error:", apiResult.error);
-      renderWidget(null, anchor, result.address, result.explorer);
+      renderWidget(null, anchor, result.address, result.explorer, apiResult.error.message);
     }
   } else {
     if (lastProcessedAddress !== null) {

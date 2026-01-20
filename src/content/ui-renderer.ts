@@ -8,14 +8,15 @@ export function renderWidget(
   profile: EthosProfile | null,
   anchorPoint: AnchorPoint,
   address: string,
-  explorer: Explorer
+  explorer: Explorer,
+  errorMessage?: string
 ): void {
   requestAnimationFrame(() => {
     removeExistingWidgets();
 
     const widget = profile
       ? createEthosWidget(profile, explorer)
-      : createErrorWidget("Unable to load Ethos profile");
+      : createErrorWidget(errorMessage || "Unable to load Ethos profile");
 
     widget.setAttribute(WIDGET_ID_ATTR, address.toLowerCase());
     widget.setAttribute("data-ethoscan-explorer", explorer);
