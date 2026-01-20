@@ -123,20 +123,129 @@
   color: #991b1b;
 }
 
-/* Compact Mode (Etherscan) - Uses Bootstrap classes for auto theme */
-
-/* Compact mode components inherit Bootstrap styling */
-.ethoscan-widget__compact-score {
-  font-size: 1.25rem;
-  font-weight: 700;
+/* Etherscan Inline Style - Matches button group aesthetic */
+.ethoscan-widget--etherscan {
+  all: initial;
+  display: inline-block;
+  box-sizing: border-box;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  margin-left: -4px;
+  margin-right: 4px;
 }
 
-.ethoscan-widget__compact-level {
-  padding: 4px 10px;
+.ethoscan-widget--etherscan * {
+  box-sizing: border-box;
+}
+
+.ethoscan-widget__etherscan-container {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  vertical-align: middle;
+}
+
+.ethoscan-widget__etherscan-divider {
+  width: 1px;
+  height: 24px;
+  background: rgba(0, 0, 0, 0.1);
+  margin: 0 6px;
+}
+
+.ethoscan-widget__etherscan-label {
+  font-size: 14px;
+  font-weight: 500;
+  color: rgba(0, 0, 0, 0.6);
+  margin: 0;
+}
+
+.ethoscan-widget__etherscan-score {
+  font-size: 16px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.ethoscan-widget__etherscan-level {
+  display: inline-block;
+  padding: 3px 10px;
   border-radius: 4px;
-  font-size: 0.813rem;
+  font-size: 12px;
   font-weight: 600;
   text-transform: capitalize;
+  margin: 0;
+  white-space: nowrap;
+}
+
+.ethoscan-widget__etherscan-stats {
+  font-size: 12px;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.5);
+  margin: 0;
+  white-space: nowrap;
+}
+
+.ethoscan-widget__etherscan-stats-positive {
+  color: #22c55e;
+  font-weight: 500;
+}
+
+.ethoscan-widget__etherscan-stats-neutral {
+  color: #a3a3a3;
+  font-weight: 500;
+}
+
+.ethoscan-widget__etherscan-stats-negative {
+  color: #ef4444;
+  font-weight: 500;
+}
+
+.ethoscan-widget__etherscan-link {
+  font-size: 12px;
+  font-weight: 500;
+  color: #0784C3;
+  text-decoration: none;
+  transition: color 0.2s;
+  margin: 0;
+  white-space: nowrap;
+}
+
+.ethoscan-widget__etherscan-link:hover {
+  color: #0056b3;
+  text-decoration: underline;
+}
+
+/* Etherscan Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+  .ethoscan-widget__etherscan-divider {
+    background: rgba(255, 255, 255, 0.15);
+  }
+
+  .ethoscan-widget__etherscan-label {
+    color: rgba(255, 255, 255, 0.6);
+  }
+
+  .ethoscan-widget__etherscan-stats {
+    color: rgba(255, 255, 255, 0.5);
+  }
+
+  .ethoscan-widget__etherscan-stats-positive {
+    color: #4ade80;
+  }
+
+  .ethoscan-widget__etherscan-stats-neutral {
+    color: #a3a3a3;
+  }
+
+  .ethoscan-widget__etherscan-stats-negative {
+    color: #f87171;
+  }
+
+  .ethoscan-widget__etherscan-link {
+    color: #4E9FD1;
+  }
+
+  .ethoscan-widget__etherscan-link:hover {
+    color: #6AB8E8;
+  }
 }
 
 /* DeBank Style - Match DeBank native format exactly */
@@ -206,6 +315,21 @@
   text-decoration: underline;
 }
 
+.ethoscan-widget__debank-stats-positive {
+  color: #22c55e;
+  font-weight: 500;
+}
+
+.ethoscan-widget__debank-stats-neutral {
+  color: #a3a3a3;
+  font-weight: 500;
+}
+
+.ethoscan-widget__debank-stats-negative {
+  color: #ef4444;
+  font-weight: 500;
+}
+
 /* DeBank Dark Mode Support */
 @media (prefers-color-scheme: dark) {
   .ethoscan-widget__debank-divider {
@@ -218,6 +342,18 @@
 
   .ethoscan-widget__debank-value {
     color: rgb(255, 255, 255);
+  }
+
+  .ethoscan-widget__debank-stats-positive {
+    color: #4ade80;
+  }
+
+  .ethoscan-widget__debank-stats-neutral {
+    color: #a3a3a3;
+  }
+
+  .ethoscan-widget__debank-stats-negative {
+    color: #f87171;
   }
 
   .ethoscan-widget__debank-link {
@@ -303,6 +439,21 @@
   text-decoration: underline;
 }
 
+.ethoscan-widget__blockscout-stats-positive {
+  color: #22c55e;
+  font-weight: 500;
+}
+
+.ethoscan-widget__blockscout-stats-neutral {
+  color: #a3a3a3;
+  font-weight: 500;
+}
+
+.ethoscan-widget__blockscout-stats-negative {
+  color: #ef4444;
+  font-weight: 500;
+}
+
 /* Blockscout Theme Support - Using Chakra UI class detection */
 html.dark .ethoscan-widget__blockscout-divider {
   background: rgba(255, 255, 255, 0.15);
@@ -322,4 +473,16 @@ html.dark .ethoscan-widget__blockscout-link {
 
 html.dark .ethoscan-widget__blockscout-link:hover {
   color: #6BA3D6;
+}
+
+html.dark .ethoscan-widget__blockscout-stats-positive {
+  color: #4ade80;
+}
+
+html.dark .ethoscan-widget__blockscout-stats-neutral {
+  color: #a3a3a3;
+}
+
+html.dark .ethoscan-widget__blockscout-stats-negative {
+  color: #f87171;
 }

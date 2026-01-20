@@ -10,7 +10,6 @@
     {
       "matches": [
         "https://etherscan.io/address/*",
-        "https://*.etherscan.io/address/*",
         "https://basescan.org/address/*",
         "https://polygonscan.com/address/*",
         "https://bscscan.com/address/*",

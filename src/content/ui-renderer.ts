@@ -13,12 +13,8 @@ export function renderWidget(
   requestAnimationFrame(() => {
     removeExistingWidgets();
 
-    const isCompact = explorer === "etherscan";
-    const isDebank = explorer === "debank";
-    const isBlockscout = explorer === "blockscout";
-
     const widget = profile
-      ? createEthosWidget(profile, isCompact, isDebank, isBlockscout)
+      ? createEthosWidget(profile, explorer)
       : createErrorWidget("Unable to load Ethos profile");
 
     widget.setAttribute(WIDGET_ID_ATTR, address.toLowerCase());
@@ -30,25 +26,19 @@ export function renderWidget(
 
 function createEthosWidget(
   profile: EthosProfile,
-  isCompact: boolean,
-  isDebank: boolean,
-  isBlockscout: boolean
+  explorer: Explorer
 ): HTMLElement {
-  if (isCompact) {
-    const section = document.createElement("section");
-    section.className = "container py-3";
-    section.setAttribute(WIDGET_ID_ATTR, "");
-
-    const card = createCompactContent(profile);
-    section.appendChild(card);
-
-    return section;
-  } else if (isDebank) {
+  if (explorer === "etherscan") {
+    const widget = createElement("div", `${WIDGET_CLASS} ${WIDGET_CLASS}--etherscan`);
+    const content = createEtherscanContent(profile);
+    widget.appendChild(content);
+    return widget;
+  } else if (explorer === "debank") {
     const widget = createElement("div", `${WIDGET_CLASS} ${WIDGET_CLASS}--debank`);
     const content = createDebankContent(profile);
     widget.appendChild(content);
     return widget;
-  } else if (isBlockscout) {
+  } else if (explorer === "blockscout") {
     const widget = createElement("div", `${WIDGET_CLASS} ${WIDGET_CLASS}--blockscout`);
     const content = createBlockscoutContent(profile);
     widget.appendChild(content);
@@ -146,42 +136,55 @@ function createStat(value: string, label: string): HTMLElement {
   return stat;
 }
 
-function createCompactContent(profile: EthosProfile): HTMLElement {
-  const card = createElement("div", "card h-100 mb-3");
+function createEtherscanContent(profile: EthosProfile): HTMLElement {
+  const container = createElement("div", "ethoscan-widget__etherscan-container");
 
-  const cardBody = createElement("div", "card-body d-flex flex-row flex-wrap align-items-center");
-  cardBody.style.gap = ".5rem";
+  const label = createElement("span", "ethoscan-widget__etherscan-label", "Ethos:");
 
-  const label = createElement("span", "text-muted small fw-semibold", "Ethos:");
-
-  const score = createElement("span", "ethoscan-widget__compact-score");
+  const score = createElement("span", "ethoscan-widget__etherscan-score");
   score.style.color = profile.color;
   score.textContent = profile.score.toString();
 
-  const level = createElement("span", "badge ethoscan-widget__compact-level");
+  const level = createElement("span", "ethoscan-widget__etherscan-level");
   level.style.backgroundColor = profile.color;
   level.style.color = getContrastTextColor(profile.color);
   level.textContent = profile.level;
 
+  const stats = createElement("span", "ethoscan-widget__etherscan-stats");
+
+  const positiveSpan = document.createElement("span");
+  positiveSpan.className = "ethoscan-widget__etherscan-stats-positive";
+  positiveSpan.textContent = `${profile.reviewStats.positive} Positive`;
+
+  const neutralSpan = document.createElement("span");
+  neutralSpan.className = "ethoscan-widget__etherscan-stats-neutral";
+  neutralSpan.textContent = `${profile.reviewStats.neutral} Neutral`;
+
+  const negativeSpan = document.createElement("span");
+  negativeSpan.className = "ethoscan-widget__etherscan-stats-negative";
+  negativeSpan.textContent = `${profile.reviewStats.negative} Negative`;
+
+  stats.appendChild(positiveSpan);
+  stats.appendChild(document.createTextNode(" · "));
+  stats.appendChild(neutralSpan);
+  stats.appendChild(document.createTextNode(" · "));
+  stats.appendChild(negativeSpan);
+
   const link = document.createElement("a");
-  link.className = "link-primary small text-decoration-none";
+  link.className = "ethoscan-widget__etherscan-link";
   link.href = profile.links.profile;
   link.target = "_blank";
   link.rel = "noopener noreferrer";
   link.textContent = "View Profile";
 
-  const stats = createElement("span", "text-muted small ms-auto");
-  stats.textContent = `${profile.reviewStats.positive} Positive · ${profile.reviewStats.neutral} Neutral · ${profile.reviewStats.negative} Negative`;
 
-  cardBody.appendChild(label);
-  cardBody.appendChild(score);
-  cardBody.appendChild(level);
-  cardBody.appendChild(link);
-  cardBody.appendChild(stats);
+  container.appendChild(label);
+  container.appendChild(score);
+  container.appendChild(level);
+  container.appendChild(stats);
+  container.appendChild(link);
 
-  card.appendChild(cardBody);
-
-  return card;
+  return container;
 }
 
 function createDebankContent(profile: EthosProfile): HTMLElement {
@@ -208,10 +211,27 @@ function createDebankContent(profile: EthosProfile): HTMLElement {
   const reviewsItem = createElement("div", "ethoscan-widget__debank-item");
   const reviewsTitle = createElement("div", "ethoscan-widget__debank-title", "Reviews");
   const reviewsValue = createElement("div", "ethoscan-widget__debank-value");
-  reviewsValue.textContent = `${profile.reviewStats.positive} Positive · ${profile.reviewStats.neutral} Neutral · ${profile.reviewStats.negative} Negative`;
   reviewsValue.style.fontSize = "12px";
   reviewsValue.style.fontWeight = "400";
-  reviewsValue.style.color = "rgb(139, 147, 167)";
+
+  const positiveSpan = document.createElement("span");
+  positiveSpan.className = "ethoscan-widget__debank-stats-positive";
+  positiveSpan.textContent = `${profile.reviewStats.positive} Positive`;
+
+  const neutralSpan = document.createElement("span");
+  neutralSpan.className = "ethoscan-widget__debank-stats-neutral";
+  neutralSpan.textContent = `${profile.reviewStats.neutral} Neutral`;
+
+  const negativeSpan = document.createElement("span");
+  negativeSpan.className = "ethoscan-widget__debank-stats-negative";
+  negativeSpan.textContent = `${profile.reviewStats.negative} Negative`;
+
+  reviewsValue.appendChild(positiveSpan);
+  reviewsValue.appendChild(document.createTextNode(" · "));
+  reviewsValue.appendChild(neutralSpan);
+  reviewsValue.appendChild(document.createTextNode(" · "));
+  reviewsValue.appendChild(negativeSpan);
+
   reviewsItem.appendChild(reviewsTitle);
   reviewsItem.appendChild(reviewsValue);
 
@@ -252,7 +272,24 @@ function createBlockscoutContent(profile: EthosProfile): HTMLElement {
   level.textContent = profile.level;
 
   const stats = createElement("span", "ethoscan-widget__blockscout-stats");
-  stats.textContent = `${profile.reviewStats.positive} Positive · ${profile.reviewStats.neutral} Neutral · ${profile.reviewStats.negative} Negative`;
+
+  const positiveSpan = document.createElement("span");
+  positiveSpan.className = "ethoscan-widget__blockscout-stats-positive";
+  positiveSpan.textContent = `${profile.reviewStats.positive} Positive`;
+
+  const neutralSpan = document.createElement("span");
+  neutralSpan.className = "ethoscan-widget__blockscout-stats-neutral";
+  neutralSpan.textContent = `${profile.reviewStats.neutral} Neutral`;
+
+  const negativeSpan = document.createElement("span");
+  negativeSpan.className = "ethoscan-widget__blockscout-stats-negative";
+  negativeSpan.textContent = `${profile.reviewStats.negative} Negative`;
+
+  stats.appendChild(positiveSpan);
+  stats.appendChild(document.createTextNode(" · "));
+  stats.appendChild(neutralSpan);
+  stats.appendChild(document.createTextNode(" · "));
+  stats.appendChild(negativeSpan);
 
   const link = document.createElement("a");
   link.className = "ethoscan-widget__blockscout-link";

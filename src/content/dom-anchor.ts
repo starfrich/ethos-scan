@@ -70,16 +70,16 @@ export function getAnchorConfig(explorer: Explorer): AnchorConfig {
         explorer,
         selectors: [
           {
+            query: ".d-flex.gap-2.noindex-section",
+            strategy: "before",
+          },
+          {
+            query: ".noindex-section",
+            strategy: "before",
+          },
+          {
             query: ".container.py-3",
             strategy: "after",
-          },
-          {
-            query: "section.container-xxl",
-            strategy: "after",
-          },
-          {
-            query: "#ContentPlaceHolder1_divSummary",
-            strategy: "prepend",
           },
         ],
         fallbackSelector: "main#content",
