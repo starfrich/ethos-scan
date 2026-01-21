@@ -215,12 +215,12 @@
 
 /* Etherscan Dark Mode Support */
 @media (prefers-color-scheme: dark) {
-  .ethoscan-widget__etherscan-divider {
-    background: rgba(255, 255, 255, 0.15);
+  .ethoscan-widget__etherscan-label {
+    color: #a3a3a3;
   }
 
-  .ethoscan-widget__etherscan-label {
-    color: rgba(255, 255, 255, 0.6);
+  .ethoscan-widget__etherscan-divider {
+    background: rgba(255, 255, 255, 0.15);
   }
 
   .ethoscan-widget__etherscan-stats {

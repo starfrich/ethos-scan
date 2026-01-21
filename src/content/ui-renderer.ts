@@ -145,7 +145,7 @@ function createStat(value: string, label: string): HTMLElement {
 function createEtherscanContent(profile: EthosProfile): HTMLElement {
   const container = createElement("div", "ethoscan-widget__etherscan-container");
 
-  const label = createElement("span", "ethoscan-widget__etherscan-label", "Ethos:");
+  const label = createElement("span", "ethoscan-widget__etherscan-label", "Ethos Score:");
 
   const score = createElement("span", "ethoscan-widget__etherscan-score");
   score.style.color = profile.color;
@@ -266,7 +266,7 @@ function createBlockscoutContent(profile: EthosProfile): HTMLElement {
 
   const divider = createElement("div", "ethoscan-widget__blockscout-divider");
 
-  const label = createElement("span", "ethoscan-widget__blockscout-label", "Ethos:");
+  const label = createElement("span", "ethoscan-widget__blockscout-label", "Ethos Score:");
 
   const score = createElement("span", "ethoscan-widget__blockscout-score");
   score.style.color = profile.color;
@@ -317,7 +317,7 @@ function createBlockscoutContent(profile: EthosProfile): HTMLElement {
 function createRoutescanContent(profile: EthosProfile): HTMLElement {
   const container = createElement("div", "ethoscan-widget__routescan-container");
 
-  const label = createElement("span", "ethoscan-widget__routescan-label", "Ethos:");
+  const label = createElement("span", "ethoscan-widget__routescan-label", "Ethos Score:");
 
   const score = createElement("span", "ethoscan-widget__routescan-score");
   score.style.color = profile.color;
