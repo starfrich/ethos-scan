@@ -135,6 +135,28 @@ export function getAnchorConfig(explorer: Explorer): AnchorConfig {
         maxRetries: 5,
       };
 
+    case "routescan":
+      return {
+        explorer,
+        selectors: [
+          {
+            query: '[data-testid="address-qr-code-button"]',
+            strategy: "after",
+          },
+          {
+            query: 'button[aria-label="Show Links"]',
+            strategy: "before",
+          },
+          {
+            query: ".flex.items-center.flex-wrap.gap-2",
+            strategy: "append",
+          },
+        ],
+        fallbackSelector: "main",
+        waitForDynamicContent: true,
+        maxRetries: 5,
+      };
+
     default:
       return {
         explorer,

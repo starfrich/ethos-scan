@@ -13,10 +13,12 @@ async function loadSettings(): Promise<void> {
   const etherscanToggle = document.getElementById('toggle-etherscan') as HTMLInputElement;
   const blockscoutToggle = document.getElementById('toggle-blockscout') as HTMLInputElement;
   const debankToggle = document.getElementById('toggle-debank') as HTMLInputElement;
+  const routescanToggle = document.getElementById('toggle-routescan') as HTMLInputElement;
 
   if (etherscanToggle) etherscanToggle.checked = settings.etherscan;
   if (blockscoutToggle) blockscoutToggle.checked = settings.blockscout;
   if (debankToggle) debankToggle.checked = settings.debank;
+  if (routescanToggle) routescanToggle.checked = settings.routescan;
 }
 
 function setupEventListeners(): void {

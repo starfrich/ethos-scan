@@ -44,6 +44,11 @@ function createEthosWidget(
     const content = createBlockscoutContent(profile);
     widget.appendChild(content);
     return widget;
+  } else if (explorer === "routescan") {
+    const widget = createElement("div", `${WIDGET_CLASS} ${WIDGET_CLASS}--routescan`);
+    const content = createRoutescanContent(profile);
+    widget.appendChild(content);
+    return widget;
   } else {
     const widget = createElement("div", WIDGET_CLASS);
     const header = createHeader(profile);
@@ -300,6 +305,57 @@ function createBlockscoutContent(profile: EthosProfile): HTMLElement {
   link.textContent = "View Profile";
 
   container.appendChild(divider);
+  container.appendChild(label);
+  container.appendChild(score);
+  container.appendChild(level);
+  container.appendChild(stats);
+  container.appendChild(link);
+
+  return container;
+}
+
+function createRoutescanContent(profile: EthosProfile): HTMLElement {
+  const container = createElement("div", "ethoscan-widget__routescan-container");
+
+  const label = createElement("span", "ethoscan-widget__routescan-label", "Ethos:");
+
+  const score = createElement("span", "ethoscan-widget__routescan-score");
+  score.style.color = profile.color;
+  score.textContent = profile.score.toString();
+
+  const level = createElement("span", "ethoscan-widget__routescan-level");
+  level.style.backgroundColor = profile.color;
+  level.style.color = getContrastTextColor(profile.color);
+  level.textContent = profile.level;
+
+  const stats = createElement("span", "ethoscan-widget__routescan-stats");
+
+  const positiveSpan = document.createElement("span");
+  positiveSpan.className = "ethoscan-widget__routescan-stats-positive";
+  positiveSpan.textContent = `${profile.reviewStats.positive} Positive`;
+
+  const neutralSpan = document.createElement("span");
+  neutralSpan.className = "ethoscan-widget__routescan-stats-neutral";
+  neutralSpan.textContent = `${profile.reviewStats.neutral} Neutral`;
+
+  const negativeSpan = document.createElement("span");
+  negativeSpan.className = "ethoscan-widget__routescan-stats-negative";
+  negativeSpan.textContent = `${profile.reviewStats.negative} Negative`;
+
+  stats.appendChild(positiveSpan);
+  stats.appendChild(document.createTextNode(" · "));
+  stats.appendChild(neutralSpan);
+  stats.appendChild(document.createTextNode(" · "));
+  stats.appendChild(negativeSpan);
+
+  const link = document.createElement("a");
+  link.className = "ethoscan-widget__routescan-link";
+  link.href = profile.links.profile;
+  link.target = "_blank";
+  link.rel = "noopener noreferrer";
+  link.textContent = "View Profile";
+
+
   container.appendChild(label);
   container.appendChild(score);
   container.appendChild(level);

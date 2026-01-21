@@ -2,12 +2,14 @@ export interface ExplorerSettings {
   etherscan: boolean;
   blockscout: boolean;
   debank: boolean;
+  routescan: boolean;
 }
 
 export const DEFAULT_SETTINGS: ExplorerSettings = {
   etherscan: true,
   blockscout: true,
   debank: true,
+  routescan: true,
 };
 
 const STORAGE_KEY = 'settings:explorers';

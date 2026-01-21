@@ -1,4 +1,4 @@
-export type Explorer = "etherscan" | "blockscout" | "debank";
+export type Explorer = "etherscan" | "blockscout" | "debank" | "routescan";
 
 export interface EthosProfile {
   score: number;

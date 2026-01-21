@@ -27,6 +27,10 @@ function detectExplorer(url: string): Explorer | null {
     const urlObj = new URL(url);
     const hostname = urlObj.hostname.toLowerCase();
 
+    if (hostname === "routescan.io" || hostname.endsWith(".routescan.io")) {
+      return "routescan";
+    }
+
     if (
       hostname === "etherscan.io" ||
       hostname.endsWith(".etherscan.io") ||
@@ -67,7 +71,7 @@ function parseAddressFromURL(url: string): AddressParseResult {
     const pathname = urlObj.pathname;
     let address: string | null = null;
 
-    if (explorer === "etherscan" || explorer === "blockscout") {
+    if (explorer === "etherscan" || explorer === "blockscout" || explorer === "routescan") {
       const addressMatch = pathname.match(/\/address\/([^\/\?#]+)/);
       if (addressMatch && addressMatch[1]) {
         address = addressMatch[1];

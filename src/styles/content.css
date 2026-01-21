@@ -486,3 +486,132 @@ html.dark .ethoscan-widget__blockscout-stats-neutral {
 html.dark .ethoscan-widget__blockscout-stats-negative {
   color: #f87171;
 }
+
+
+/* Routescan Inline Style - Matches button group aesthetic */
+.ethoscan-widget--routescan {
+  all: initial;
+  display: inline-block;
+  box-sizing: border-box;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  margin-left: -4px;
+  margin-right: 4px;
+}
+
+.ethoscan-widget--routescan * {
+  box-sizing: border-box;
+}
+
+.ethoscan-widget__routescan-container {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  vertical-align: middle;
+}
+
+.ethoscan-widget__routescan-divider {
+  width: 1px;
+  height: 24px;
+  background: rgba(0, 0, 0, 0.1);
+  margin: 0 6px;
+}
+
+.ethoscan-widget__routescan-label {
+  font-size: 14px;
+  font-weight: 500;
+  color: rgba(0, 0, 0, 0.6);
+  margin: 0;
+}
+
+.ethoscan-widget__routescan-score {
+  font-size: 16px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.ethoscan-widget__routescan-level {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: capitalize;
+  margin: 0;
+  white-space: nowrap;
+}
+
+.ethoscan-widget__routescan-stats {
+  font-size: 12px;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.5);
+  margin: 0;
+  white-space: nowrap;
+}
+
+.ethoscan-widget__routescan-stats-positive {
+  color: #22c55e !important;
+  font-weight: 500;
+}
+
+.ethoscan-widget__routescan-stats-neutral {
+  color: #a3a3a3 !important;
+  font-weight: 500;
+}
+
+.ethoscan-widget__routescan-stats-negative {
+  color: #ef4444 !important;
+  font-weight: 500;
+}
+
+.ethoscan-widget__routescan-link {
+  font-size: 12px;
+  font-weight: 500;
+  color: #0784C3;
+  text-decoration: none;
+  transition: color 0.2s;
+  margin: 0;
+  white-space: nowrap;
+}
+
+.ethoscan-widget__routescan-link:hover {
+  color: #0056b3;
+  text-decoration: underline;
+}
+
+/* routescan Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+  .ethoscan-widget__routescan-divider {
+    background: rgba(255, 255, 255, 0.15);
+  }
+
+  .ethoscan-widget__routescan-label {
+    color: rgba(255, 255, 255, 0.6);
+  }
+
+  .ethoscan-widget__routescan-stats {
+    color: rgba(255, 255, 255, 0.5);
+  }
+
+  .ethoscan-widget--routescan .ethoscan-widget__routescan-stats-positive {
+    color: #22c55e !important;
+    font-weight: 500;
+  }
+
+  .ethoscan-widget--routescan .ethoscan-widget__routescan-stats-neutral {
+    color: #a3a3a3 !important;
+    font-weight: 500;
+  }
+
+  .ethoscan-widget--routescan .ethoscan-widget__routescan-stats-negative {
+    color: #ef4444 !important;
+    font-weight: 500;
+  }
+
+  .ethoscan-widget__routescan-link {
+    color: #4E9FD1 !important;
+  }
+
+  .ethoscan-widget__routescan-link:hover {
+    color: #6AB8E8 !important;
+  }
+}

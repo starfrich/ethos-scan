@@ -36,7 +36,9 @@
         "https://moonscan.io/address/*",
         "https://blockscout.com/address/*",
         "https://*.blockscout.com/address/*",
-        "https://debank.com/profile/*"
+        "https://debank.com/profile/*",
+        "https://routescan.io/address/*",
+        "https://*.routescan.io/address/*"
       ],
       "js": ["content.js"],
       "css": ["content.css"]
@@ -58,7 +60,9 @@
         "https://moonscan.io/*",
         "https://blockscout.com/*",
         "https://*.blockscout.com/*",
-        "https://debank.com/*"
+        "https://debank.com/*",
+        "https://routescan.io/*",
+        "https://*.routescan.io/*"
       ]
     }
   ]
