@@ -98,3 +98,7 @@ UI colors follow the official Ethos score breakdown.
 ## Status
 This project is under active development.
 Explorer support is implemented incrementally.
+
+
+## License
+MIT - See [LICENSE](LICENSE.md) file for details
