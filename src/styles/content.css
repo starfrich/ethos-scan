@@ -516,7 +516,7 @@ html.dark .ethoscan-widget__blockscout-stats-negative {
 .ethoscan-widget__routescan-label {
   font-size: 14px;
   font-weight: 500;
-  color: rgba(0, 0, 0, 0.6);
+  color: rgba(0, 0, 0);
   margin: 0;
 }
 
@@ -540,7 +540,7 @@ html.dark .ethoscan-widget__blockscout-stats-negative {
 .ethoscan-widget__routescan-stats {
   font-size: 12px;
   font-weight: 400;
-  color: rgba(0, 0, 0, 0.5);
+  color: rgba(0, 0, 0);
   margin: 0;
   white-space: nowrap;
 }
@@ -581,11 +581,11 @@ html.dark .ethoscan-widget__blockscout-stats-negative {
     background: rgba(255, 255, 255, 0.15);
   }
 
-  .ethoscan-widget__routescan-label {
+  html.dark .ethoscan-widget__routescan-label {
     color: rgba(255, 255, 255, 0.6);
   }
 
-  .ethoscan-widget__routescan-stats {
+  html.dark .ethoscan-widget__routescan-stats {
     color: rgba(255, 255, 255, 0.5);
   }
 
