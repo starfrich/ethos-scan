@@ -1,8 +1,16 @@
 import "../styles/content.css";
 import type { Explorer, AddressParseResult } from "../shared/types";
-import { fetchEthosProfile, normalizeEthosData } from "../api/ethos";
+import {
+  fetchEthosProfile,
+  fetchReviews,
+  normalizeEthosData,
+} from "../api/ethos";
 import { findAnchorPoint } from "./dom-anchor.js";
-import { renderWidget, removeExistingWidgets } from "./ui-renderer.js";
+import {
+  renderWidget,
+  renderEtherscanReviews,
+  removeExistingWidgets,
+} from "./ui-renderer.js";
 import { getSettings } from "../shared/storage";
 
 function validateEthereumAddress(address: string): boolean {
@@ -71,7 +79,11 @@ function parseAddressFromURL(url: string): AddressParseResult {
     const pathname = urlObj.pathname;
     let address: string | null = null;
 
-    if (explorer === "etherscan" || explorer === "blockscout" || explorer === "routescan") {
+    if (
+      explorer === "etherscan" ||
+      explorer === "blockscout" ||
+      explorer === "routescan"
+    ) {
       const addressMatch = pathname.match(/\/address\/([^\/\?#]+)/);
       if (addressMatch && addressMatch[1]) {
         address = addressMatch[1];
@@ -121,7 +133,9 @@ async function detectAndProcessAddress(): Promise<void> {
       if (lastProcessedAddress !== null) {
         lastProcessedAddress = null;
         removeExistingWidgets();
-        console.log(`[Ethoscan] Explorer ${result.explorer} is disabled in settings`);
+        console.log(
+          `[Ethoscan] Explorer ${result.explorer} is disabled in settings`,
+        );
       }
       return;
     }
@@ -131,26 +145,46 @@ async function detectAndProcessAddress(): Promise<void> {
     }
 
     lastProcessedAddress = result.address;
-    console.log(`[Ethoscan] Address detected: ${result.address} on ${result.explorer}`);
+    console.log(
+      `[Ethoscan] Address detected: ${result.address} on ${result.explorer}`,
+    );
 
     const anchor = await findAnchorPoint(result.explorer);
 
     if (!anchor) {
-      console.error(`[Ethoscan] Failed to find DOM anchor point for ${result.explorer}`);
+      console.error(
+        `[Ethoscan] Failed to find DOM anchor point for ${result.explorer}`,
+      );
       return;
     }
 
-    console.log(`[Ethoscan] Found anchor point with ${anchor.confidence} confidence`);
+    console.log(
+      `[Ethoscan] Found anchor point with ${anchor.confidence} confidence`,
+    );
 
-    const apiResult = await fetchEthosProfile(result.address);
+    const [apiResult, reviews] = await Promise.all([
+      fetchEthosProfile(result.address),
+      result.explorer === "etherscan"
+        ? fetchReviews(result.address)
+        : Promise.resolve([]),
+    ]);
 
     if (apiResult.success) {
       const profile = normalizeEthosData(apiResult.data);
       console.log("[Ethoscan] Rendering widget for:", result.address);
       renderWidget(profile, anchor, result.address, result.explorer);
+      if (result.explorer === "etherscan") {
+        renderEtherscanReviews(reviews);
+      }
     } else {
       console.error("[Ethoscan] API Error:", apiResult.error);
-      renderWidget(null, anchor, result.address, result.explorer, apiResult.error.message);
+      renderWidget(
+        null,
+        anchor,
+        result.address,
+        result.explorer,
+        apiResult.error.message,
+      );
     }
   } else {
     if (lastProcessedAddress !== null) {
@@ -187,7 +221,7 @@ function stopNavigationMonitoring(): void {
 try {
   if (chrome.runtime?.id) {
     chrome.runtime.onMessage.addListener((message: { type: string }) => {
-      if (message.type === 'SETTINGS_UPDATED') {
+      if (message.type === "SETTINGS_UPDATED") {
         void detectAndProcessAddress();
       }
     });

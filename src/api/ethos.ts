@@ -1,15 +1,23 @@
-import type { EthosApiResult, EthosApiUserResponse, EthosProfile } from "../shared/types";
+import type {
+  EthosApiResult,
+  EthosApiUserResponse,
+  EthosProfile,
+  EthosReviewActivity,
+  EthosActivitiesResponse,
+} from "../shared/types";
 
 const ETHOS_API_BASE = "https://api.ethos.network/api/v2";
 const CLIENT_HEADER = "ethoscan@1.0.0";
 
-export async function fetchEthosProfile(address: string): Promise<EthosApiResult> {
+export async function fetchEthosProfile(
+  address: string,
+): Promise<EthosApiResult> {
   try {
     const response = await fetch(`${ETHOS_API_BASE}/users/by/address`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Accept": "*/*",
+        Accept: "*/*",
         "X-Ethos-Client": CLIENT_HEADER,
       },
       body: JSON.stringify({
@@ -67,7 +75,8 @@ export async function fetchEthosProfile(address: string): Promise<EthosApiResult
     return {
       success: false,
       error: {
-        message: error instanceof Error ? error.message : "Network request failed",
+        message:
+          error instanceof Error ? error.message : "Network request failed",
         statusCode: 0,
       },
     };
@@ -82,7 +91,10 @@ function validateScore(score: number): number {
   return Math.floor(Math.max(0, Math.min(2800, score)));
 }
 
-export function getScoreLevelInfo(score: number): { level: string; color: string } {
+export function getScoreLevelInfo(score: number): {
+  level: string;
+  color: string;
+} {
   if (score < 800) {
     return { level: "untrusted", color: "#b72b38" };
   }
@@ -113,6 +125,36 @@ export function getScoreLevelInfo(score: number): { level: string; color: string
   return { level: "renowned", color: "#7A5EAF" };
 }
 
+export async function fetchReviews(
+  address: string,
+): Promise<EthosReviewActivity[]> {
+  try {
+    const response = await fetch(
+      `${ETHOS_API_BASE}/activities/profile/received`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "*/*",
+          "X-Ethos-Client": CLIENT_HEADER,
+        },
+        body: JSON.stringify({
+          userkey: `address:${address}`,
+          filter: ["review"],
+          limit: 3,
+        }),
+      },
+    );
+
+    if (!response.ok) return [];
+
+    const data: EthosActivitiesResponse = await response.json();
+    return data.values ?? [];
+  } catch {
+    return [];
+  }
+}
+
 export function normalizeEthosData(raw: EthosApiUserResponse): EthosProfile {
   const score = validateScore(raw.score);
 
@@ -126,7 +168,9 @@ export function normalizeEthosData(raw: EthosApiUserResponse): EthosProfile {
     positive: raw.stats?.review?.received?.positive ?? 0,
   };
 
-  const normalizeString = (value: string | null | undefined): string | undefined => {
+  const normalizeString = (
+    value: string | null | undefined,
+  ): string | undefined => {
     return value && value.trim() !== "" ? value : undefined;
   };
 

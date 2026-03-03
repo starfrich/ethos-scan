@@ -17,10 +17,10 @@ export interface EthosProfile {
     profile: string;
     scoreBreakdown: string;
   };
-  lastReview?: {
+  reviews?: {
     text: string;
-    timestamp: string;
-  };
+    sentiment: "POSITIVE" | "NEUTRAL" | "NEGATIVE";
+  }[];
 }
 
 export interface EthosScoreBreakdown {
@@ -69,6 +69,19 @@ export interface EthosApiUserResponse {
     scoreBreakdown: string;
   };
   stats: EthosApiUserStats;
+}
+
+export interface EthosReviewActivity {
+  data: {
+    comment: string;
+    score: "positive" | "neutral" | "negative";
+  };
+  link: string;
+}
+
+export interface EthosActivitiesResponse {
+  values: EthosReviewActivity[];
+  total: number;
 }
 
 export interface EthosApiError {

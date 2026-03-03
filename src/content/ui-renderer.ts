@@ -1,4 +1,9 @@
-import type { EthosProfile, AnchorPoint, Explorer } from "../shared/types.js";
+import type {
+  EthosProfile,
+  AnchorPoint,
+  Explorer,
+  EthosReviewActivity,
+} from "../shared/types.js";
 import { getContrastTextColor } from "../shared/color-utils.js";
 
 const WIDGET_CLASS = "ethoscan-widget";
@@ -9,7 +14,7 @@ export function renderWidget(
   anchorPoint: AnchorPoint,
   address: string,
   explorer: Explorer,
-  errorMessage?: string
+  errorMessage?: string,
 ): void {
   requestAnimationFrame(() => {
     removeExistingWidgets();
@@ -27,25 +32,37 @@ export function renderWidget(
 
 function createEthosWidget(
   profile: EthosProfile,
-  explorer: Explorer
+  explorer: Explorer,
 ): HTMLElement {
   if (explorer === "etherscan") {
-    const widget = createElement("div", `${WIDGET_CLASS} ${WIDGET_CLASS}--etherscan`);
+    const widget = createElement(
+      "div",
+      `${WIDGET_CLASS} ${WIDGET_CLASS}--etherscan`,
+    );
     const content = createEtherscanContent(profile);
     widget.appendChild(content);
     return widget;
   } else if (explorer === "debank") {
-    const widget = createElement("div", `${WIDGET_CLASS} ${WIDGET_CLASS}--debank`);
+    const widget = createElement(
+      "div",
+      `${WIDGET_CLASS} ${WIDGET_CLASS}--debank`,
+    );
     const content = createDebankContent(profile);
     widget.appendChild(content);
     return widget;
   } else if (explorer === "blockscout") {
-    const widget = createElement("div", `${WIDGET_CLASS} ${WIDGET_CLASS}--blockscout`);
+    const widget = createElement(
+      "div",
+      `${WIDGET_CLASS} ${WIDGET_CLASS}--blockscout`,
+    );
     const content = createBlockscoutContent(profile);
     widget.appendChild(content);
     return widget;
   } else if (explorer === "routescan") {
-    const widget = createElement("div", `${WIDGET_CLASS} ${WIDGET_CLASS}--routescan`);
+    const widget = createElement(
+      "div",
+      `${WIDGET_CLASS} ${WIDGET_CLASS}--routescan`,
+    );
     const content = createRoutescanContent(profile);
     widget.appendChild(content);
     return widget;
@@ -65,7 +82,7 @@ function createHeader(profile: EthosProfile): HTMLElement {
   const title = createElement(
     "span",
     "ethoscan-widget__title",
-    "Ethos Reputation"
+    "Ethos Reputation",
   );
 
   const link = document.createElement("a");
@@ -98,7 +115,8 @@ function createScoreSection(profile: EthosProfile): HTMLElement {
 
   const score = createElement("div", "ethoscan-widget__score");
   score.style.color = profile.color;
-  score.style.textShadow = '0 0 8px rgba(255, 255, 255, 0.9), 0 0 2px rgba(0, 0, 0, 0.3)';
+  score.style.textShadow =
+    "0 0 8px rgba(255, 255, 255, 0.9), 0 0 2px rgba(0, 0, 0, 0.3)";
   score.textContent = profile.score.toString();
 
   const level = createElement("div", "ethoscan-widget__level");
@@ -143,9 +161,16 @@ function createStat(value: string, label: string): HTMLElement {
 }
 
 function createEtherscanContent(profile: EthosProfile): HTMLElement {
-  const container = createElement("div", "ethoscan-widget__etherscan-container");
+  const container = createElement(
+    "div",
+    "ethoscan-widget__etherscan-container",
+  );
 
-  const label = createElement("span", "ethoscan-widget__etherscan-label", "Ethos Score:");
+  const label = createElement(
+    "span",
+    "ethoscan-widget__etherscan-label",
+    "Ethos Score:",
+  );
 
   const score = createElement("span", "ethoscan-widget__etherscan-score");
   score.style.color = profile.color;
@@ -183,7 +208,6 @@ function createEtherscanContent(profile: EthosProfile): HTMLElement {
   link.rel = "noopener noreferrer";
   link.textContent = "View Profile";
 
-
   container.appendChild(label);
   container.appendChild(score);
   container.appendChild(level);
@@ -199,7 +223,11 @@ function createDebankContent(profile: EthosProfile): HTMLElement {
   const divider = createElement("div", "ethoscan-widget__debank-divider");
 
   const scoreItem = createElement("div", "ethoscan-widget__debank-item");
-  const scoreTitle = createElement("div", "ethoscan-widget__debank-title", "Ethos Score");
+  const scoreTitle = createElement(
+    "div",
+    "ethoscan-widget__debank-title",
+    "Ethos Score",
+  );
   const scoreValue = createElement("div", "ethoscan-widget__debank-value");
   scoreValue.style.color = profile.color;
   scoreValue.textContent = profile.score.toString();
@@ -207,7 +235,11 @@ function createDebankContent(profile: EthosProfile): HTMLElement {
   scoreItem.appendChild(scoreValue);
 
   const levelItem = createElement("div", "ethoscan-widget__debank-item");
-  const levelTitle = createElement("div", "ethoscan-widget__debank-title", "Level");
+  const levelTitle = createElement(
+    "div",
+    "ethoscan-widget__debank-title",
+    "Level",
+  );
   const levelValue = createElement("div", "ethoscan-widget__debank-value");
   levelValue.style.color = profile.color;
   levelValue.textContent = profile.level;
@@ -215,7 +247,11 @@ function createDebankContent(profile: EthosProfile): HTMLElement {
   levelItem.appendChild(levelValue);
 
   const reviewsItem = createElement("div", "ethoscan-widget__debank-item");
-  const reviewsTitle = createElement("div", "ethoscan-widget__debank-title", "Reviews");
+  const reviewsTitle = createElement(
+    "div",
+    "ethoscan-widget__debank-title",
+    "Reviews",
+  );
   const reviewsValue = createElement("div", "ethoscan-widget__debank-value");
   reviewsValue.style.fontSize = "12px";
   reviewsValue.style.fontWeight = "400";
@@ -262,11 +298,18 @@ function createDebankContent(profile: EthosProfile): HTMLElement {
 }
 
 function createBlockscoutContent(profile: EthosProfile): HTMLElement {
-  const container = createElement("div", "ethoscan-widget__blockscout-container");
+  const container = createElement(
+    "div",
+    "ethoscan-widget__blockscout-container",
+  );
 
   const divider = createElement("div", "ethoscan-widget__blockscout-divider");
 
-  const label = createElement("span", "ethoscan-widget__blockscout-label", "Ethos Score:");
+  const label = createElement(
+    "span",
+    "ethoscan-widget__blockscout-label",
+    "Ethos Score:",
+  );
 
   const score = createElement("span", "ethoscan-widget__blockscout-score");
   score.style.color = profile.color;
@@ -315,9 +358,16 @@ function createBlockscoutContent(profile: EthosProfile): HTMLElement {
 }
 
 function createRoutescanContent(profile: EthosProfile): HTMLElement {
-  const container = createElement("div", "ethoscan-widget__routescan-container");
+  const container = createElement(
+    "div",
+    "ethoscan-widget__routescan-container",
+  );
 
-  const label = createElement("span", "ethoscan-widget__routescan-label", "Ethos Score:");
+  const label = createElement(
+    "span",
+    "ethoscan-widget__routescan-label",
+    "Ethos Score:",
+  );
 
   const score = createElement("span", "ethoscan-widget__routescan-score");
   score.style.color = profile.color;
@@ -355,7 +405,6 @@ function createRoutescanContent(profile: EthosProfile): HTMLElement {
   link.rel = "noopener noreferrer";
   link.textContent = "View Profile";
 
-
   container.appendChild(label);
   container.appendChild(score);
   container.appendChild(level);
@@ -372,7 +421,7 @@ function createErrorWidget(errorMessage: string): HTMLElement {
   const message = createElement(
     "span",
     "ethoscan-widget__error-message",
-    errorMessage
+    errorMessage,
   );
 
   widget.appendChild(icon);
@@ -384,7 +433,7 @@ function createErrorWidget(errorMessage: string): HTMLElement {
 function createElement(
   tag: string,
   className: string,
-  textContent?: string
+  textContent?: string,
 ): HTMLElement {
   const element = document.createElement(tag);
   element.className = className;
@@ -417,13 +466,97 @@ function injectWidget(widget: HTMLElement, anchorPoint: AnchorPoint): void {
       break;
 
     default:
-      console.error("[Ethoscan] Unknown insertion strategy:", insertionStrategy);
+      console.error(
+        "[Ethoscan] Unknown insertion strategy:",
+        insertionStrategy,
+      );
   }
+}
+
+const REVIEW_CONTAINER_CLASS = "ethoscan-reviews";
+
+export function renderEtherscanReviews(reviews: EthosReviewActivity[]): void {
+  const inject = () => {
+    const section = document.querySelector<HTMLElement>(
+      "div.py-4.noindex-section[data-nosnippet]",
+    );
+    if (!section) return;
+
+    const container = createElement("div", REVIEW_CONTAINER_CLASS);
+    const heading = createElement(
+      "p",
+      "ethoscan-reviews__heading",
+      "Ethos Reviews",
+    );
+    container.appendChild(heading);
+
+    if (reviews.length === 0) {
+      const empty = createElement(
+        "p",
+        "ethoscan-reviews__empty",
+        "No reviews yet",
+      );
+      container.appendChild(empty);
+    } else {
+      const grid = createElement("div", "ethoscan-reviews__grid");
+
+      for (const review of reviews) {
+        const comment = review.data.comment?.trim();
+        if (!comment) continue;
+
+        const sentimentClass = {
+          positive: "ethoscan-reviews__badge--positive",
+          neutral: "ethoscan-reviews__badge--neutral",
+          negative: "ethoscan-reviews__badge--negative",
+        }[review.data.score];
+
+        const sentimentLabel = {
+          positive: "Positive",
+          neutral: "Neutral",
+          negative: "Negative",
+        }[review.data.score];
+
+        const card = createElement("div", "ethoscan-reviews__card");
+
+        const badge = createElement(
+          "span",
+          `ethoscan-reviews__badge ${sentimentClass}`,
+          sentimentLabel,
+        );
+        const quote = createElement(
+          "p",
+          "ethoscan-reviews__quote",
+          `"${comment}"`,
+        );
+
+        const readMore = document.createElement("a");
+        readMore.className = "ethoscan-reviews__read-more";
+        readMore.href = review.link;
+        readMore.target = "_blank";
+        readMore.rel = "noopener noreferrer";
+        readMore.textContent = "Read more";
+
+        card.appendChild(badge);
+        card.appendChild(quote);
+        card.appendChild(readMore);
+        grid.appendChild(card);
+      }
+
+      container.appendChild(grid);
+    }
+
+    section.innerHTML = "";
+    section.appendChild(container);
+  };
+
+  requestAnimationFrame(() => setTimeout(inject, 300));
 }
 
 export function removeExistingWidgets(): void {
   const existingWidgets = document.querySelectorAll(`.${WIDGET_CLASS}`);
-  const existingSections = document.querySelectorAll(`section[${WIDGET_ID_ATTR}]`);
+  const existingSections = document.querySelectorAll(
+    `section[${WIDGET_ID_ATTR}]`,
+  );
 
   existingWidgets.forEach((widget) => {
     widget.remove();
@@ -432,6 +565,9 @@ export function removeExistingWidgets(): void {
   existingSections.forEach((section) => {
     section.remove();
   });
+
+  const reviewContainer = document.querySelector(`.${REVIEW_CONTAINER_CLASS}`);
+  if (reviewContainer) reviewContainer.remove();
 
   const totalRemoved = existingWidgets.length + existingSections.length;
   if (totalRemoved > 0) {
