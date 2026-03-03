@@ -654,6 +654,51 @@ export function renderBlockscoutReviews(reviews: EthosReviewActivity[]): void {
   requestAnimationFrame(() => setTimeout(inject, 500));
 }
 
+const ROUTESCAN_REVIEW_CLASS = "ethoscan-routescan-reviews";
+
+export function renderRoutescanReviews(reviews: EthosReviewActivity[]): void {
+  const inject = () => {
+    const widget = document.querySelector<HTMLElement>(
+      ".ethoscan-widget--routescan",
+    );
+    if (!widget) return;
+
+    const grandparent = widget.parentElement?.parentElement;
+    if (!grandparent) return;
+
+    const existing = document.querySelector(`.${ROUTESCAN_REVIEW_CLASS}`);
+    if (existing) existing.remove();
+
+    const container = createElement("div", ROUTESCAN_REVIEW_CLASS);
+    const heading = createElement(
+      "p",
+      "ethoscan-reviews__heading",
+      "Ethos Reviews",
+    );
+    container.appendChild(heading);
+
+    if (reviews.length === 0) {
+      const empty = createElement(
+        "p",
+        "ethoscan-reviews__empty",
+        "No reviews yet",
+      );
+      container.appendChild(empty);
+    } else {
+      const grid = createElement("div", "ethoscan-reviews__grid");
+      for (const review of reviews) {
+        const card = buildReviewCard(review);
+        if (card) grid.appendChild(card);
+      }
+      container.appendChild(grid);
+    }
+
+    grandparent.insertAdjacentElement("afterend", container);
+  };
+
+  requestAnimationFrame(() => setTimeout(inject, 500));
+}
+
 export function removeExistingWidgets(): void {
   const existingWidgets = document.querySelectorAll(`.${WIDGET_CLASS}`);
   const existingSections = document.querySelectorAll(
@@ -678,6 +723,9 @@ export function removeExistingWidgets(): void {
 
   const debankReviews = document.querySelector(`.${DEBANK_REVIEW_CLASS}`);
   if (debankReviews) debankReviews.remove();
+
+  const routescanReviews = document.querySelector(`.${ROUTESCAN_REVIEW_CLASS}`);
+  if (routescanReviews) routescanReviews.remove();
 
   const totalRemoved = existingWidgets.length + existingSections.length;
   if (totalRemoved > 0) {
