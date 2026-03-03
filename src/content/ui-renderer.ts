@@ -552,6 +552,86 @@ export function renderEtherscanReviews(reviews: EthosReviewActivity[]): void {
   requestAnimationFrame(() => setTimeout(inject, 300));
 }
 
+const DEBANK_REVIEW_CLASS = "ethoscan-debank-reviews";
+
+export function renderDebankReviews(reviews: EthosReviewActivity[]): void {
+  const inject = () => {
+    const footer = document.querySelector<HTMLElement>(
+      '[class*="HeaderInfo_userInfoFooter"]',
+    );
+    if (!footer) return;
+
+    const existing = document.querySelector(`.${DEBANK_REVIEW_CLASS}`);
+    if (existing) existing.remove();
+
+    const container = createElement("div", DEBANK_REVIEW_CLASS);
+    const heading = createElement(
+      "p",
+      "ethoscan-reviews__heading",
+      "Ethos Reviews",
+    );
+    container.appendChild(heading);
+
+    if (reviews.length === 0) {
+      const empty = createElement(
+        "p",
+        "ethoscan-reviews__empty",
+        "No reviews yet",
+      );
+      container.appendChild(empty);
+    } else {
+      const grid = createElement("div", "ethoscan-reviews__grid");
+
+      for (const review of reviews) {
+        const comment = review.data.comment?.trim();
+        if (!comment) continue;
+
+        const sentimentClass = {
+          positive: "ethoscan-reviews__badge--positive",
+          neutral: "ethoscan-reviews__badge--neutral",
+          negative: "ethoscan-reviews__badge--negative",
+        }[review.data.score];
+
+        const sentimentLabel = {
+          positive: "Positive",
+          neutral: "Neutral",
+          negative: "Negative",
+        }[review.data.score];
+
+        const card = createElement("div", "ethoscan-reviews__card");
+        const badge = createElement(
+          "span",
+          `ethoscan-reviews__badge ${sentimentClass}`,
+          sentimentLabel,
+        );
+        const quote = createElement(
+          "p",
+          "ethoscan-reviews__quote",
+          `"${comment}"`,
+        );
+
+        const readMore = document.createElement("a");
+        readMore.className = "ethoscan-reviews__read-more";
+        readMore.href = review.link;
+        readMore.target = "_blank";
+        readMore.rel = "noopener noreferrer";
+        readMore.textContent = "Read more";
+
+        card.appendChild(badge);
+        card.appendChild(quote);
+        card.appendChild(readMore);
+        grid.appendChild(card);
+      }
+
+      container.appendChild(grid);
+    }
+
+    footer.insertAdjacentElement("afterend", container);
+  };
+
+  requestAnimationFrame(() => setTimeout(inject, 500));
+}
+
 export function removeExistingWidgets(): void {
   const existingWidgets = document.querySelectorAll(`.${WIDGET_CLASS}`);
   const existingSections = document.querySelectorAll(
@@ -568,6 +648,9 @@ export function removeExistingWidgets(): void {
 
   const reviewContainer = document.querySelector(`.${REVIEW_CONTAINER_CLASS}`);
   if (reviewContainer) reviewContainer.remove();
+
+  const debankReviews = document.querySelector(`.${DEBANK_REVIEW_CLASS}`);
+  if (debankReviews) debankReviews.remove();
 
   const totalRemoved = existingWidgets.length + existingSections.length;
   if (totalRemoved > 0) {

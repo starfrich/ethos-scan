@@ -9,6 +9,7 @@ import { findAnchorPoint } from "./dom-anchor.js";
 import {
   renderWidget,
   renderEtherscanReviews,
+  renderDebankReviews,
   removeExistingWidgets,
 } from "./ui-renderer.js";
 import { getSettings } from "../shared/storage";
@@ -162,9 +163,11 @@ async function detectAndProcessAddress(): Promise<void> {
       `[Ethoscan] Found anchor point with ${anchor.confidence} confidence`,
     );
 
+    const fetchReviewsForExplorer =
+      result.explorer === "etherscan" || result.explorer === "debank";
     const [apiResult, reviews] = await Promise.all([
       fetchEthosProfile(result.address),
-      result.explorer === "etherscan"
+      fetchReviewsForExplorer
         ? fetchReviews(result.address)
         : Promise.resolve([]),
     ]);
@@ -175,6 +178,8 @@ async function detectAndProcessAddress(): Promise<void> {
       renderWidget(profile, anchor, result.address, result.explorer);
       if (result.explorer === "etherscan") {
         renderEtherscanReviews(reviews);
+      } else if (result.explorer === "debank") {
+        renderDebankReviews(reviews);
       }
     } else {
       console.error("[Ethoscan] API Error:", apiResult.error);
