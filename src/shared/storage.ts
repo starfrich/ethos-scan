@@ -3,6 +3,7 @@ export interface ExplorerSettings {
   blockscout: boolean;
   debank: boolean;
   routescan: boolean;
+  theme: 'light' | 'dark';
 }
 
 export const DEFAULT_SETTINGS: ExplorerSettings = {
@@ -10,6 +11,7 @@ export const DEFAULT_SETTINGS: ExplorerSettings = {
   blockscout: true,
   debank: true,
   routescan: true,
+  theme: 'light',
 };
 
 const STORAGE_KEY = 'settings:explorers';

@@ -1,5 +1,7 @@
 @import "tailwindcss" prefix(ethoscan);
-@plugin "daisyui";
+@plugin "daisyui" {
+   themes: nord --default, dark --prefersdark;
+ }
 
 * {
   margin: 0;
@@ -28,6 +30,22 @@ body {
 .ethoscan-logo-img {
   @apply ethoscan:h-8;
   width: auto;
+}
+
+.ethoscan-logo-light {
+  display: block;
+}
+
+.ethoscan-logo-dark {
+  display: none;
+}
+
+[data-theme="dark"] .ethoscan-logo-light {
+  display: none;
+}
+
+[data-theme="dark"] .ethoscan-logo-dark {
+  display: block;
 }
 
 .ethoscan-popup-link {
