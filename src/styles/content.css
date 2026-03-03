@@ -326,6 +326,18 @@
   line-height: 1.4;
 }
 
+.ethoscan-reviews__description {
+  font-size: 12px;
+  color: currentColor;
+  opacity: 0.6;
+  margin: 0;
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
 .ethoscan-reviews__read-more {
   font-size: 12px;
   color: #0784c3;
@@ -402,6 +414,11 @@
 
 [theme="dark"] .ethoscan-debank-reviews .ethoscan-reviews__empty {
   color: rgba(255, 255, 255, 0.3);
+}
+
+[theme="dark"] .ethoscan-debank-reviews .ethoscan-reviews__description {
+  color: rgba(255, 255, 255, 0.55);
+  opacity: 1;
 }
 
 /* DeBank Style - Match DeBank native format exactly */

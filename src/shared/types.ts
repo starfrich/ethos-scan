@@ -75,6 +75,7 @@ export interface EthosReviewActivity {
   data: {
     comment: string;
     score: "positive" | "neutral" | "negative";
+    metadata: string;
   };
   link: string;
 }

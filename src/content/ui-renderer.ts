@@ -475,6 +475,64 @@ function injectWidget(widget: HTMLElement, anchorPoint: AnchorPoint): void {
 
 const REVIEW_CONTAINER_CLASS = "ethoscan-reviews";
 
+function parseReviewDescription(metadata: string): string {
+  try {
+    const parsed = JSON.parse(metadata);
+    return parsed.description?.trim() ?? "";
+  } catch {
+    return "";
+  }
+}
+
+function buildReviewCard(review: EthosReviewActivity): HTMLElement | null {
+  const title = review.data.comment?.trim();
+  if (!title) return null;
+
+  const description = parseReviewDescription(review.data.metadata);
+
+  const sentimentClass = {
+    positive: "ethoscan-reviews__badge--positive",
+    neutral: "ethoscan-reviews__badge--neutral",
+    negative: "ethoscan-reviews__badge--negative",
+  }[review.data.score];
+
+  const sentimentLabel = {
+    positive: "Positive",
+    neutral: "Neutral",
+    negative: "Negative",
+  }[review.data.score];
+
+  const card = createElement("div", "ethoscan-reviews__card");
+  const badge = createElement(
+    "span",
+    `ethoscan-reviews__badge ${sentimentClass}`,
+    sentimentLabel,
+  );
+  const quote = createElement("p", "ethoscan-reviews__quote", `"${title}"`);
+
+  card.appendChild(badge);
+  card.appendChild(quote);
+
+  if (description) {
+    const desc = createElement(
+      "p",
+      "ethoscan-reviews__description",
+      description,
+    );
+    card.appendChild(desc);
+  }
+
+  const readMore = document.createElement("a");
+  readMore.className = "ethoscan-reviews__read-more";
+  readMore.href = review.link;
+  readMore.target = "_blank";
+  readMore.rel = "noopener noreferrer";
+  readMore.textContent = "Read more";
+  card.appendChild(readMore);
+
+  return card;
+}
+
 export function renderEtherscanReviews(reviews: EthosReviewActivity[]): void {
   const inject = () => {
     const section = document.querySelector<HTMLElement>(
@@ -499,49 +557,10 @@ export function renderEtherscanReviews(reviews: EthosReviewActivity[]): void {
       container.appendChild(empty);
     } else {
       const grid = createElement("div", "ethoscan-reviews__grid");
-
       for (const review of reviews) {
-        const comment = review.data.comment?.trim();
-        if (!comment) continue;
-
-        const sentimentClass = {
-          positive: "ethoscan-reviews__badge--positive",
-          neutral: "ethoscan-reviews__badge--neutral",
-          negative: "ethoscan-reviews__badge--negative",
-        }[review.data.score];
-
-        const sentimentLabel = {
-          positive: "Positive",
-          neutral: "Neutral",
-          negative: "Negative",
-        }[review.data.score];
-
-        const card = createElement("div", "ethoscan-reviews__card");
-
-        const badge = createElement(
-          "span",
-          `ethoscan-reviews__badge ${sentimentClass}`,
-          sentimentLabel,
-        );
-        const quote = createElement(
-          "p",
-          "ethoscan-reviews__quote",
-          `"${comment}"`,
-        );
-
-        const readMore = document.createElement("a");
-        readMore.className = "ethoscan-reviews__read-more";
-        readMore.href = review.link;
-        readMore.target = "_blank";
-        readMore.rel = "noopener noreferrer";
-        readMore.textContent = "Read more";
-
-        card.appendChild(badge);
-        card.appendChild(quote);
-        card.appendChild(readMore);
-        grid.appendChild(card);
+        const card = buildReviewCard(review);
+        if (card) grid.appendChild(card);
       }
-
       container.appendChild(grid);
     }
 
@@ -581,46 +600,9 @@ export function renderDebankReviews(reviews: EthosReviewActivity[]): void {
       container.appendChild(empty);
     } else {
       const grid = createElement("div", "ethoscan-reviews__grid");
-
       for (const review of reviews) {
-        const comment = review.data.comment?.trim();
-        if (!comment) continue;
-
-        const sentimentClass = {
-          positive: "ethoscan-reviews__badge--positive",
-          neutral: "ethoscan-reviews__badge--neutral",
-          negative: "ethoscan-reviews__badge--negative",
-        }[review.data.score];
-
-        const sentimentLabel = {
-          positive: "Positive",
-          neutral: "Neutral",
-          negative: "Negative",
-        }[review.data.score];
-
-        const card = createElement("div", "ethoscan-reviews__card");
-        const badge = createElement(
-          "span",
-          `ethoscan-reviews__badge ${sentimentClass}`,
-          sentimentLabel,
-        );
-        const quote = createElement(
-          "p",
-          "ethoscan-reviews__quote",
-          `"${comment}"`,
-        );
-
-        const readMore = document.createElement("a");
-        readMore.className = "ethoscan-reviews__read-more";
-        readMore.href = review.link;
-        readMore.target = "_blank";
-        readMore.rel = "noopener noreferrer";
-        readMore.textContent = "Read more";
-
-        card.appendChild(badge);
-        card.appendChild(quote);
-        card.appendChild(readMore);
-        grid.appendChild(card);
+        const card = buildReviewCard(review);
+        if (card) grid.appendChild(card);
       }
 
       container.appendChild(grid);
