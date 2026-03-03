@@ -1,27 +1,23 @@
-import "../styles/content.css";
-import type { Explorer, AddressParseResult } from "../shared/types";
-import {
-  fetchEthosProfile,
-  fetchReviews,
-  normalizeEthosData,
-} from "../api/ethos";
-import { findAnchorPoint } from "./dom-anchor.js";
+import '../styles/content.css';
+import type { Explorer, AddressParseResult } from '../shared/types';
+import { fetchEthosProfile, fetchReviews, normalizeEthosData } from '../api/ethos';
+import { findAnchorPoint } from './dom-anchor.js';
 import {
   renderWidget,
   renderEtherscanReviews,
   renderDebankReviews,
   renderBlockscoutReviews,
   renderRoutescanReviews,
-  removeExistingWidgets,
-} from "./ui-renderer.js";
-import { getSettings } from "../shared/storage";
+  removeExistingWidgets
+} from './ui-renderer.js';
+import { getSettings } from '../shared/storage';
 
 function validateEthereumAddress(address: string): boolean {
-  if (!address || typeof address !== "string") {
+  if (!address || typeof address !== 'string') {
     return false;
   }
 
-  if (!address.startsWith("0x")) {
+  if (!address.startsWith('0x')) {
     return false;
   }
 
@@ -38,26 +34,26 @@ function detectExplorer(url: string): Explorer | null {
     const urlObj = new URL(url);
     const hostname = urlObj.hostname.toLowerCase();
 
-    if (hostname === "routescan.io" || hostname.endsWith(".routescan.io")) {
-      return "routescan";
+    if (hostname === 'routescan.io' || hostname.endsWith('.routescan.io')) {
+      return 'routescan';
     }
 
     if (
-      hostname === "etherscan.io" ||
-      hostname.endsWith(".etherscan.io") ||
-      hostname.endsWith("scan.com") ||
-      hostname.endsWith("scan.org") ||
-      hostname.endsWith("scan.io")
+      hostname === 'etherscan.io' ||
+      hostname.endsWith('.etherscan.io') ||
+      hostname.endsWith('scan.com') ||
+      hostname.endsWith('scan.org') ||
+      hostname.endsWith('scan.io')
     ) {
-      return "etherscan";
+      return 'etherscan';
     }
 
-    if (hostname === "blockscout.com" || hostname.endsWith(".blockscout.com")) {
-      return "blockscout";
+    if (hostname === 'blockscout.com' || hostname.endsWith('.blockscout.com')) {
+      return 'blockscout';
     }
 
-    if (hostname === "debank.com") {
-      return "debank";
+    if (hostname === 'debank.com') {
+      return 'debank';
     }
 
     return null;
@@ -73,7 +69,7 @@ function parseAddressFromURL(url: string): AddressParseResult {
     return {
       address: null,
       explorer: null,
-      isValid: false,
+      isValid: false
     };
   }
 
@@ -82,16 +78,12 @@ function parseAddressFromURL(url: string): AddressParseResult {
     const pathname = urlObj.pathname;
     let address: string | null = null;
 
-    if (
-      explorer === "etherscan" ||
-      explorer === "blockscout" ||
-      explorer === "routescan"
-    ) {
+    if (explorer === 'etherscan' || explorer === 'blockscout' || explorer === 'routescan') {
       const addressMatch = pathname.match(/\/address\/([^\/\?#]+)/);
       if (addressMatch && addressMatch[1]) {
         address = addressMatch[1];
       }
-    } else if (explorer === "debank") {
+    } else if (explorer === 'debank') {
       const profileMatch = pathname.match(/\/profile\/([^\/\?#]+)/);
       if (profileMatch && profileMatch[1]) {
         address = profileMatch[1];
@@ -102,7 +94,7 @@ function parseAddressFromURL(url: string): AddressParseResult {
       return {
         address: null,
         explorer,
-        isValid: false,
+        isValid: false
       };
     }
 
@@ -111,13 +103,13 @@ function parseAddressFromURL(url: string): AddressParseResult {
     return {
       address: isValid ? address : null,
       explorer,
-      isValid,
+      isValid
     };
   } catch {
     return {
       address: null,
       explorer,
-      isValid: false,
+      isValid: false
     };
   }
 }
@@ -136,9 +128,7 @@ async function detectAndProcessAddress(): Promise<void> {
       if (lastProcessedAddress !== null) {
         lastProcessedAddress = null;
         removeExistingWidgets();
-        console.log(
-          `[Ethoscan] Explorer ${result.explorer} is disabled in settings`,
-        );
+        console.log(`[Ethoscan] Explorer ${result.explorer} is disabled in settings`);
       }
       return;
     }
@@ -148,63 +138,49 @@ async function detectAndProcessAddress(): Promise<void> {
     }
 
     lastProcessedAddress = result.address;
-    console.log(
-      `[Ethoscan] Address detected: ${result.address} on ${result.explorer}`,
-    );
+    console.log(`[Ethoscan] Address detected: ${result.address} on ${result.explorer}`);
 
     const anchor = await findAnchorPoint(result.explorer);
 
     if (!anchor) {
-      console.error(
-        `[Ethoscan] Failed to find DOM anchor point for ${result.explorer}`,
-      );
+      console.error(`[Ethoscan] Failed to find DOM anchor point for ${result.explorer}`);
       return;
     }
 
-    console.log(
-      `[Ethoscan] Found anchor point with ${anchor.confidence} confidence`,
-    );
+    console.log(`[Ethoscan] Found anchor point with ${anchor.confidence} confidence`);
 
     const fetchReviewsForExplorer =
-      result.explorer === "etherscan" ||
-      result.explorer === "debank" ||
-      result.explorer === "blockscout" ||
-      result.explorer === "routescan";
+      result.explorer === 'etherscan' ||
+      result.explorer === 'debank' ||
+      result.explorer === 'blockscout' ||
+      result.explorer === 'routescan';
     const [apiResult, reviews] = await Promise.all([
       fetchEthosProfile(result.address),
-      fetchReviewsForExplorer
-        ? fetchReviews(result.address)
-        : Promise.resolve([]),
+      fetchReviewsForExplorer ? fetchReviews(result.address) : Promise.resolve([])
     ]);
 
     if (apiResult.success) {
       const profile = normalizeEthosData(apiResult.data);
-      console.log("[Ethoscan] Rendering widget for:", result.address);
+      console.log('[Ethoscan] Rendering widget for:', result.address);
       renderWidget(profile, anchor, result.address, result.explorer);
-      if (result.explorer === "etherscan") {
+      if (result.explorer === 'etherscan') {
         renderEtherscanReviews(reviews);
-      } else if (result.explorer === "debank") {
+      } else if (result.explorer === 'debank') {
         renderDebankReviews(reviews);
-      } else if (result.explorer === "blockscout") {
+      } else if (result.explorer === 'blockscout') {
         renderBlockscoutReviews(reviews);
-      } else if (result.explorer === "routescan") {
+      } else if (result.explorer === 'routescan') {
         renderRoutescanReviews(reviews);
       }
     } else {
-      console.error("[Ethoscan] API Error:", apiResult.error);
-      renderWidget(
-        null,
-        anchor,
-        result.address,
-        result.explorer,
-        apiResult.error.message,
-      );
+      console.error('[Ethoscan] API Error:', apiResult.error);
+      renderWidget(null, anchor, result.address, result.explorer, apiResult.error.message);
     }
   } else {
     if (lastProcessedAddress !== null) {
       lastProcessedAddress = null;
       removeExistingWidgets();
-      console.log("[Ethoscan] Cleaned up widgets - no valid address");
+      console.log('[Ethoscan] Cleaned up widgets - no valid address');
     }
   }
 }
@@ -213,7 +189,7 @@ function startNavigationMonitoring(): void {
   popstateHandler = () => {
     void detectAndProcessAddress();
   };
-  window.addEventListener("popstate", popstateHandler);
+  window.addEventListener('popstate', popstateHandler);
 
   urlCheckInterval = window.setInterval(() => {
     void detectAndProcessAddress();
@@ -222,7 +198,7 @@ function startNavigationMonitoring(): void {
 
 function stopNavigationMonitoring(): void {
   if (popstateHandler !== null) {
-    window.removeEventListener("popstate", popstateHandler);
+    window.removeEventListener('popstate', popstateHandler);
     popstateHandler = null;
   }
   if (urlCheckInterval !== null) {
@@ -235,7 +211,7 @@ function stopNavigationMonitoring(): void {
 try {
   if (chrome.runtime?.id) {
     chrome.runtime.onMessage.addListener((message: { type: string }) => {
-      if (message.type === "SETTINGS_UPDATED") {
+      if (message.type === 'SETTINGS_UPDATED') {
         void detectAndProcessAddress();
       }
     });
@@ -257,10 +233,10 @@ function init(): void {
   }
 }
 
-window.addEventListener("beforeunload", stopNavigationMonitoring);
+window.addEventListener('beforeunload', stopNavigationMonitoring);
 
-if (document.readyState === "loading") {
-  document.addEventListener("DOMContentLoaded", init);
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', init);
 } else {
   init();
 }

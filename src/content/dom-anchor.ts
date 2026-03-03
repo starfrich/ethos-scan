@@ -1,8 +1,4 @@
-import type {
-  Explorer,
-  AnchorPoint,
-  AnchorConfig,
-} from "../shared/types.js";
+import type { Explorer, AnchorPoint, AnchorConfig } from '../shared/types.js';
 
 export function validateAnchorPoint(element: HTMLElement): boolean {
   if (!document.contains(element)) {
@@ -10,7 +6,7 @@ export function validateAnchorPoint(element: HTMLElement): boolean {
   }
 
   const style = window.getComputedStyle(element);
-  if (style.display === "none" || style.visibility === "hidden") {
+  if (style.display === 'none' || style.visibility === 'hidden') {
     return false;
   }
 
@@ -22,7 +18,7 @@ export function validateAnchorPoint(element: HTMLElement): boolean {
   let parent = element.parentElement;
   while (parent) {
     const parentStyle = window.getComputedStyle(parent);
-    if (parentStyle.display === "none" || parentStyle.visibility === "hidden") {
+    if (parentStyle.display === 'none' || parentStyle.visibility === 'hidden') {
       return false;
     }
     parent = parent.parentElement;
@@ -53,7 +49,7 @@ export function waitForElement(
 
     observer.observe(document.body, {
       childList: true,
-      subtree: true,
+      subtree: true
     });
 
     const timeoutId = setTimeout(() => {
@@ -65,116 +61,117 @@ export function waitForElement(
 
 export function getAnchorConfig(explorer: Explorer): AnchorConfig {
   switch (explorer) {
-    case "etherscan":
+    case 'etherscan':
       return {
         explorer,
         selectors: [
           {
-            query: ".d-flex.gap-2.noindex-section",
-            strategy: "before",
+            query: '.d-flex.gap-2.noindex-section',
+            strategy: 'before'
           },
           {
-            query: ".noindex-section",
-            strategy: "before",
+            query: '.noindex-section',
+            strategy: 'before'
           },
           {
-            query: ".container.py-3",
-            strategy: "after",
-          },
+            query: '.container.py-3',
+            strategy: 'after'
+          }
         ],
-        fallbackSelector: "main#content",
-        maxRetries: 3,
+        fallbackSelector: 'main#content',
+        maxRetries: 3
       };
 
-    case "blockscout":
+    case 'blockscout':
       return {
         explorer,
         selectors: [
           {
-            query: "div.css-82b7an",
-            strategy: "append",
+            query: 'div.css-82b7an',
+            strategy: 'append'
           },
           {
-            query: "h1.chakra-heading",
-            strategy: "after",
+            query: 'h1.chakra-heading',
+            strategy: 'after',
             validator: (el: HTMLElement) => {
-              const text = el.textContent?.trim().toLowerCase() || "";
-              if (text === "address details" || text.startsWith("address details")) {
+              const text = el.textContent?.trim().toLowerCase() || '';
+              if (text === 'address details' || text.startsWith('address details')) {
                 const parent = el.closest("div[class^='css-']");
                 const nextSibling = parent?.nextElementSibling;
-                return nextSibling?.classList.contains("css-82b7an") || nextSibling?.querySelector(".chakra-tag__root") !== null;
+                return (
+                  nextSibling?.classList.contains('css-82b7an') ||
+                  nextSibling?.querySelector('.chakra-tag__root') !== null
+                );
               }
               return false;
-            },
+            }
           },
           {
-            query: ".address-entity",
-            strategy: "after",
-          },
+            query: '.address-entity',
+            strategy: 'after'
+          }
         ],
-        fallbackSelector: "main",
+        fallbackSelector: 'main',
         waitForDynamicContent: true,
-        maxRetries: 5,
+        maxRetries: 5
       };
 
-    case "debank":
+    case 'debank':
       return {
         explorer,
         selectors: [
           {
             query: '[class*="HeaderInfo_leftContent"]',
-            strategy: "append",
+            strategy: 'append'
           },
           {
             query: '[class*="HeaderInfo_userInfoContainer"]',
-            strategy: "append",
-          },
+            strategy: 'append'
+          }
         ],
-        fallbackSelector: "main",
+        fallbackSelector: 'main',
         waitForDynamicContent: true,
-        maxRetries: 5,
+        maxRetries: 5
       };
 
-    case "routescan":
+    case 'routescan':
       return {
         explorer,
         selectors: [
           {
             query: '[data-testid="address-qr-code-button"]',
-            strategy: "after",
+            strategy: 'after'
           },
           {
             query: 'button[aria-label="Show Links"]',
-            strategy: "before",
+            strategy: 'before'
           },
           {
-            query: ".flex.items-center.flex-wrap.gap-2",
-            strategy: "append",
-          },
+            query: '.flex.items-center.flex-wrap.gap-2',
+            strategy: 'append'
+          }
         ],
-        fallbackSelector: "main",
+        fallbackSelector: 'main',
         waitForDynamicContent: true,
-        maxRetries: 5,
+        maxRetries: 5
       };
 
     default:
       return {
         explorer,
         selectors: [],
-        maxRetries: 3,
+        maxRetries: 3
       };
   }
 }
 
-export async function findAnchorPoint(
-  explorer: Explorer
-): Promise<AnchorPoint | null> {
+export async function findAnchorPoint(explorer: Explorer): Promise<AnchorPoint | null> {
   const config = getAnchorConfig(explorer);
 
   console.group(`[Ethoscan] Finding anchor for ${explorer}`);
 
   for (const selector of config.selectors) {
-    console.log("Trying selector:", selector.query);
+    console.log('Trying selector:', selector.query);
 
     let element: HTMLElement | null = null;
 
@@ -186,73 +183,71 @@ export async function findAnchorPoint(
 
     if (element) {
       const isValid = validateAnchorPoint(element);
-      console.log("Element found:", true);
-      console.log("Validation passed:", isValid);
+      console.log('Element found:', true);
+      console.log('Validation passed:', isValid);
 
       if (isValid) {
         if (selector.validator && !selector.validator(element)) {
-          console.log("Custom validator failed");
+          console.log('Custom validator failed');
           continue;
         }
 
-        console.log("✓ Primary selector matched (high confidence)");
+        console.log('✓ Primary selector matched (high confidence)');
         console.groupEnd();
 
         return {
           element,
           insertionStrategy: selector.strategy,
-          confidence: "high",
+          confidence: 'high'
         };
       }
     } else {
-      console.log("Element found:", false);
+      console.log('Element found:', false);
     }
   }
 
   if (config.fallbackSelector) {
-    console.log("Trying fallback selector:", config.fallbackSelector);
+    console.log('Trying fallback selector:', config.fallbackSelector);
 
     let fallbackElement: HTMLElement | null = null;
 
     if (config.waitForDynamicContent) {
       fallbackElement = await waitForElement(config.fallbackSelector, 3000);
     } else {
-      fallbackElement = document.querySelector<HTMLElement>(
-        config.fallbackSelector
-      );
+      fallbackElement = document.querySelector<HTMLElement>(config.fallbackSelector);
     }
 
     if (fallbackElement && validateAnchorPoint(fallbackElement)) {
-      console.log("✓ Fallback selector matched (medium confidence)");
+      console.log('✓ Fallback selector matched (medium confidence)');
       console.groupEnd();
 
       return {
         element: fallbackElement,
-        insertionStrategy: "prepend",
-        confidence: "medium",
+        insertionStrategy: 'prepend',
+        confidence: 'medium'
       };
     }
   }
 
-  const genericSelectors = ["main", "body"];
+  const genericSelectors = ['main', 'body'];
   for (const genericSelector of genericSelectors) {
-    console.log("Trying generic selector:", genericSelector);
+    console.log('Trying generic selector:', genericSelector);
 
     const genericElement = document.querySelector<HTMLElement>(genericSelector);
 
     if (genericElement && validateAnchorPoint(genericElement)) {
-      console.warn("⚠ Using generic selector (low confidence)");
+      console.warn('⚠ Using generic selector (low confidence)');
       console.groupEnd();
 
       return {
         element: genericElement,
-        insertionStrategy: "prepend",
-        confidence: "low",
+        insertionStrategy: 'prepend',
+        confidence: 'low'
       };
     }
   }
 
-  console.error("✗ No anchor point found");
+  console.error('✗ No anchor point found');
   console.groupEnd();
 
   return null;

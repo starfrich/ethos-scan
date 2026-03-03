@@ -1,1 +1,1 @@
-console.log("Ethoscan background script initialized");
+console.log('Ethoscan background script initialized');

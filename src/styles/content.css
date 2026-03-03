@@ -132,7 +132,7 @@
     system-ui,
     -apple-system,
     BlinkMacSystemFont,
-    "Segoe UI",
+    'Segoe UI',
     Roboto,
     sans-serif;
   margin-left: -4px;
@@ -260,7 +260,7 @@
     system-ui,
     -apple-system,
     BlinkMacSystemFont,
-    "Segoe UI",
+    'Segoe UI',
     Roboto,
     sans-serif;
   padding: 0;
@@ -358,65 +358,64 @@
 }
 
 /* Etherscan dark mode via Bootstrap data attribute */
-[data-bs-theme="dark"] .ethoscan-reviews__badge--positive {
+[data-bs-theme='dark'] .ethoscan-reviews__badge--positive {
   color: #4ade80;
   background: rgba(74, 222, 128, 0.12);
 }
 
-[data-bs-theme="dark"] .ethoscan-reviews__badge--neutral {
+[data-bs-theme='dark'] .ethoscan-reviews__badge--neutral {
   color: #a3a3a3;
   background: rgba(163, 163, 163, 0.12);
 }
 
-[data-bs-theme="dark"] .ethoscan-reviews__badge--negative {
+[data-bs-theme='dark'] .ethoscan-reviews__badge--negative {
   color: #f87171;
   background: rgba(248, 113, 113, 0.12);
 }
 
-[data-bs-theme="dark"] .ethoscan-reviews__read-more {
+[data-bs-theme='dark'] .ethoscan-reviews__read-more {
   color: #4e9fd1;
 }
 
 /* DeBank Review Section */
 .ethoscan-debank-reviews {
-  font-family:
-    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   padding: 16px 0 8px 0;
   width: 100%;
 }
 
-[theme="dark"] .ethoscan-debank-reviews .ethoscan-reviews__quote {
+[theme='dark'] .ethoscan-debank-reviews .ethoscan-reviews__quote {
   color: rgba(255, 255, 255, 0.85);
 }
 
-[theme="dark"] .ethoscan-debank-reviews .ethoscan-reviews__heading {
+[theme='dark'] .ethoscan-debank-reviews .ethoscan-reviews__heading {
   color: rgba(255, 255, 255, 0.35);
 }
 
-[theme="dark"] .ethoscan-debank-reviews .ethoscan-reviews__badge--positive {
+[theme='dark'] .ethoscan-debank-reviews .ethoscan-reviews__badge--positive {
   color: #4ade80;
   background: rgba(74, 222, 128, 0.12);
 }
 
-[theme="dark"] .ethoscan-debank-reviews .ethoscan-reviews__badge--neutral {
+[theme='dark'] .ethoscan-debank-reviews .ethoscan-reviews__badge--neutral {
   color: #a3a3a3;
   background: rgba(163, 163, 163, 0.12);
 }
 
-[theme="dark"] .ethoscan-debank-reviews .ethoscan-reviews__badge--negative {
+[theme='dark'] .ethoscan-debank-reviews .ethoscan-reviews__badge--negative {
   color: #f87171;
   background: rgba(248, 113, 113, 0.12);
 }
 
-[theme="dark"] .ethoscan-debank-reviews .ethoscan-reviews__read-more {
+[theme='dark'] .ethoscan-debank-reviews .ethoscan-reviews__read-more {
   color: #4e9fd1;
 }
 
-[theme="dark"] .ethoscan-debank-reviews .ethoscan-reviews__empty {
+[theme='dark'] .ethoscan-debank-reviews .ethoscan-reviews__empty {
   color: rgba(255, 255, 255, 0.3);
 }
 
-[theme="dark"] .ethoscan-debank-reviews .ethoscan-reviews__description {
+[theme='dark'] .ethoscan-debank-reviews .ethoscan-reviews__description {
   color: rgba(255, 255, 255, 0.55);
   opacity: 1;
 }
@@ -426,8 +425,7 @@
   all: initial;
   display: contents;
   box-sizing: border-box;
-  font-family:
-    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
 .ethoscan-widget--debank * {
@@ -541,8 +539,7 @@
 
 /* Blockscout Review Section */
 .ethoscan-blockscout-reviews {
-  font-family:
-    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   padding: 24px 0 8px 0;
   width: 100%;
 }
@@ -590,7 +587,7 @@ html.dark .ethoscan-blockscout-reviews .ethoscan-reviews__empty {
     system-ui,
     -apple-system,
     BlinkMacSystemFont,
-    "Segoe UI",
+    'Segoe UI',
     Roboto,
     sans-serif;
   padding: 12px 0 8px 0;
@@ -639,8 +636,7 @@ html.dark .ethoscan-routescan-reviews .ethoscan-reviews__empty {
   all: initial;
   display: contents;
   box-sizing: border-box;
-  font-family:
-    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
 .ethoscan-widget--blockscout * {
@@ -766,7 +762,7 @@ html.dark .ethoscan-widget__blockscout-stats-negative {
     system-ui,
     -apple-system,
     BlinkMacSystemFont,
-    "Segoe UI",
+    'Segoe UI',
     Roboto,
     sans-serif;
   margin-left: 8px;

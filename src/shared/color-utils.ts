@@ -4,7 +4,7 @@ export function getRelativeLuminance(hexColor: string): number {
   const g = parseInt(hex.substr(2, 2), 16) / 255;
   const b = parseInt(hex.substr(4, 2), 16) / 255;
 
-  const [rLinear, gLinear, bLinear] = [r, g, b].map(c =>
+  const [rLinear, gLinear, bLinear] = [r, g, b].map((c) =>
     c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4)
   );
 

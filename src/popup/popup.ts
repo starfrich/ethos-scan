@@ -28,11 +28,13 @@ async function loadSettings(): Promise<void> {
 }
 
 function setupEventListeners(): void {
-  const toggles = document.querySelectorAll<HTMLInputElement>('input[type="checkbox"][data-explorer]');
+  const toggles = document.querySelectorAll<HTMLInputElement>(
+    'input[type="checkbox"][data-explorer]'
+  );
   const themeToggle = document.getElementById('toggle-theme') as HTMLInputElement;
 
   // Explorer toggles
-  toggles.forEach(toggle => {
+  toggles.forEach((toggle) => {
     toggle.addEventListener('change', async (e) => {
       const target = e.target as HTMLInputElement;
       const explorer = target.dataset.explorer as Extract<
@@ -78,11 +80,9 @@ async function notifyContentScripts(): Promise<void> {
   const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
 
   if (tab?.id) {
-    chrome.tabs
-      .sendMessage(tab.id, { type: 'SETTINGS_UPDATED' })
-      .catch(() => {
-        // Content script might not be loaded
-      });
+    chrome.tabs.sendMessage(tab.id, { type: 'SETTINGS_UPDATED' }).catch(() => {
+      // Content script might not be loaded
+    });
   }
 }
 

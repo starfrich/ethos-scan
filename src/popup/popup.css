@@ -1,7 +1,9 @@
-@import "tailwindcss" prefix(ethoscan);
+@import 'tailwindcss' prefix(ethoscan);
 @plugin "daisyui" {
-   themes: nord --default, dark --prefersdark;
- }
+  themes:
+    nord --default,
+    dark --prefersdark;
+}
 
 * {
   margin: 0;
@@ -11,7 +13,8 @@
 
 body {
   @apply ethoscan:m-0 ethoscan:p-0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  font-family:
+    -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
 }
 
 .ethoscan-popup-container {
@@ -40,11 +43,11 @@ body {
   display: none;
 }
 
-[data-theme="dark"] .ethoscan-logo-light {
+[data-theme='dark'] .ethoscan-logo-light {
   display: none;
 }
 
-[data-theme="dark"] .ethoscan-logo-dark {
+[data-theme='dark'] .ethoscan-logo-dark {
   display: block;
 }
 

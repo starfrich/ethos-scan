@@ -11,7 +11,7 @@ export const DEFAULT_SETTINGS: ExplorerSettings = {
   blockscout: true,
   debank: true,
   routescan: true,
-  theme: 'light',
+  theme: 'light'
 };
 
 const STORAGE_KEY = 'settings:explorers';

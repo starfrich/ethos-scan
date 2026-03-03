@@ -1,4 +1,4 @@
-export type Explorer = "etherscan" | "blockscout" | "debank" | "routescan";
+export type Explorer = 'etherscan' | 'blockscout' | 'debank' | 'routescan';
 
 export interface EthosProfile {
   score: number;
@@ -19,7 +19,7 @@ export interface EthosProfile {
   };
   reviews?: {
     text: string;
-    sentiment: "POSITIVE" | "NEUTRAL" | "NEGATIVE";
+    sentiment: 'POSITIVE' | 'NEUTRAL' | 'NEGATIVE';
   }[];
 }
 
@@ -74,7 +74,7 @@ export interface EthosApiUserResponse {
 export interface EthosReviewActivity {
   data: {
     comment: string;
-    score: "positive" | "neutral" | "negative";
+    score: 'positive' | 'neutral' | 'negative';
     metadata: string;
   };
   link: string;
@@ -96,13 +96,13 @@ export type EthosApiResult =
 
 export interface AnchorPoint {
   element: HTMLElement;
-  insertionStrategy: "after" | "before" | "prepend" | "append";
-  confidence: "high" | "medium" | "low";
+  insertionStrategy: 'after' | 'before' | 'prepend' | 'append';
+  confidence: 'high' | 'medium' | 'low';
 }
 
 export interface AnchorSelector {
   query: string;
-  strategy: "after" | "before" | "prepend" | "append";
+  strategy: 'after' | 'before' | 'prepend' | 'append';
   validator?: (element: HTMLElement) => boolean;
 }
 
