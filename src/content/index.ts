@@ -10,6 +10,7 @@ import {
   renderWidget,
   renderEtherscanReviews,
   renderDebankReviews,
+  renderBlockscoutReviews,
   removeExistingWidgets,
 } from "./ui-renderer.js";
 import { getSettings } from "../shared/storage";
@@ -164,7 +165,9 @@ async function detectAndProcessAddress(): Promise<void> {
     );
 
     const fetchReviewsForExplorer =
-      result.explorer === "etherscan" || result.explorer === "debank";
+      result.explorer === "etherscan" ||
+      result.explorer === "debank" ||
+      result.explorer === "blockscout";
     const [apiResult, reviews] = await Promise.all([
       fetchEthosProfile(result.address),
       fetchReviewsForExplorer
@@ -180,6 +183,8 @@ async function detectAndProcessAddress(): Promise<void> {
         renderEtherscanReviews(reviews);
       } else if (result.explorer === "debank") {
         renderDebankReviews(reviews);
+      } else if (result.explorer === "blockscout") {
+        renderBlockscoutReviews(reviews);
       }
     } else {
       console.error("[Ethoscan] API Error:", apiResult.error);
