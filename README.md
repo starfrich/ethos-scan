@@ -12,7 +12,9 @@ The extension is strictly representational and does not perform interpretation, 
 ## Screenshots
 
 ### Extension
-![Extension](screenshots/extension.png)
+![Extension Light Mode](screenshots/extension-light.png)
+
+![Extension Dark Mode](screenshots/extension-dark.png)
 
 ### Etherscan
 ![Etherscan](screenshots/etherscan-1.png)
